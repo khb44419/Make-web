@@ -1,8 +1,6 @@
 {
   "_설명": "장소별 사진 후보(위키백과 문서 제목). 앞에서부터 차례로 시도하고, 같은 도시 안에서 이미 쓴 사진은 건너뛴다. 'en:'은 영어 위키백과.",
   "cover:osaka": [
-    "en:Osaka",
-    "グリコサイン",
     "道頓堀"
   ],
   "cover:nagoya": [
@@ -15,9 +13,10 @@
     "en:Osaka Castle"
   ],
   "osaka:도톤보리": [
-    "道頓堀",
     "en:Dōtonbori",
-    "グリコサイン"
+    "グリコサイン",
+    "道頓堀川",
+    "en:Namba"
   ],
   "osaka:유니버설 스튜디오 재팬": [
     "ユニバーサル・スタジオ・ジャパン",
@@ -67,9 +66,8 @@
   ],
   "osaka:버터비어 (해리포터 구역)": [
     "en:Butterbeer",
-    "en:The Wizarding World of Harry Potter (Universal Studios Japan)",
-    "en:Hogsmeade",
-    "ホグズミード"
+    "en:Universal City Station",
+    "ユニバーサルシティ駅"
   ],
   "osaka:오사카 타코야키 뮤지엄": [
     "ユニバーサル・シティウォーク大阪",
@@ -119,9 +117,8 @@
     "en:Oasis 21"
   ],
   "nagoya:해리포터 마호도코로": [
-    "en:Harry Potter Shop at Platform 9¾",
-    "en:King's Cross railway station",
-    "en:Harry Potter (film series)"
+    "en:Oasis 21",
+    "en:Sakae, Nagoya"
   ],
   "nagoya:도토리공화국 (지브리스토어)": [
     "どんぐり共和国",
@@ -169,8 +166,8 @@
     "en:Karaage"
   ],
   "nagoya:테바사키 세카이노 야만짱": [
-    "手羽先",
-    "en:Tebasaki",
+    "名古屋めし",
+    "en:Nagoya cuisine",
     "en:Buffalo wing"
   ],
   "nagoya:시라카와고 푸딩의 집": [

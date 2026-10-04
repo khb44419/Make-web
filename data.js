@@ -57,9 +57,9 @@ const CITIES = {
     tagline: "미소카츠와 히츠마부시, 한적하게 즐기는 일본 중부",
     center: [35.1709, 136.9066],
     weather: "2월 평균 2~10°C. 오사카보다 살짝 더 춥고 건조해요",
-    transport: "주부공항에서 메이테츠 μ-SKY로 나고야역까지 약 30분",
+    transport: "주부공항에서 메이테츠 공항특급 뮤스카이(μ-SKY)로 나고야역까지 약 30분",
     events: ["2월 초 세쓰분, 아츠타 신궁", "지브리 파크는 입장권 사전 예약 필수"],
-    compare: { flightTime: "약 1시간 50분", airport: "μ-SKY 30분", mood: "한적 · 미식 · 감성", highlight: "지브리 파크" },
+    compare: { flightTime: "약 1시간 50분", airport: "뮤스카이 30분", mood: "한적 · 미식 · 감성", highlight: "지브리 파크" },
     sights: [
       { name: "나고야성", q: "名古屋城", desc: "금 샤치호코가 올려진 성. 혼마루어전이 화려해요.", pos: [35.1856, 136.8993] },
       { name: "아츠타 신궁", q: "熱田神宮", desc: "역사 깊은 신사. 근처에 히츠마부시 맛집이 있어요.", pos: [35.1277, 136.9087] },
@@ -82,16 +82,16 @@ const CITIES = {
       base: { name: "나고야역 (숙소 근처)", q: "名古屋駅", pos: [35.1709, 136.8815] }
     },
     plan: [
-      { title: "도착 & 사카에", stops: ["airport", "base", "사카에 · 오아시스21", "미소카츠 야바톤"], tips: ["μ-SKY는 지정석 포함 1,430엔", "오아시스21 지붕 위 산책은 밤이 예뻐요"] },
+      { title: "도착 & 사카에", stops: ["airport", "base", "사카에 · 오아시스21", "미소카츠 야바톤"], tips: ["뮤스카이(μ-SKY)는 지정석 포함 1,430엔", "오아시스21 지붕 위 산책은 밤이 예뻐요"] },
       { title: "나고야성 & 오스", stops: ["코메다 커피 모닝", "나고야성", "오스 상점가", "테바사키 세카이노 야만짱"], tips: ["모닝은 보통 오전 11시까지", "오스는 길거리 간식 먹으며 걷기"] },
       { title: "지브리 파크", stops: ["base", "지브리 파크", "타이완 라멘 미센"], tips: ["입장권은 시간 지정 사전 예약", "리니모 '아이치큐하쿠키넨코엔역' 하차"] },
-      { title: "아츠타 신궁 & 귀국", stops: ["아츠타 신궁", "히츠마부시 호라이켄", "키시멘", "airport"], tips: ["호라이켄은 오픈 전에 줄 서기", "공항까지 μ-SKY 약 30분"] }
+      { title: "아츠타 신궁 & 귀국", stops: ["아츠타 신궁", "히츠마부시 호라이켄", "키시멘", "airport"], tips: ["호라이켄은 오픈 전에 줄 서기", "공항까지 뮤스카이 약 30분"] }
     ],
     costs: {
       flight: { min: 165000, avg: 300000, note: "트립닷컴 기준 특가 왕복 16만원대부터. 2월 평균 30만원은 추정값이에요." },
       hotel: { min: 100000, avg: 150000, note: "나고야역 주변 평균 약 €72(약 11만원)/박, 더블룸 평균은 약 $146(약 20만원)." },
       transport: [
-        { name: "메이테츠 μ-SKY (공항 ↔ 나고야역, 편도)", yen: 1430, times: 2, note: "기본운임 980엔 + 지정석 450엔" },
+        { name: "메이테츠 뮤스카이 μ-SKY (공항 ↔ 나고야역, 편도)", yen: 1430, times: 2, note: "기본운임 980엔 + 지정석 450엔" },
         { name: "지하철 1일권", yen: 870, times: 2, note: "토·일·공휴일과 매월 8일은 도니치 에코킷푸 620엔" },
         { name: "지브리 파크 왕복 (지하철 + 리니모)", yen: 1400, times: 1, note: "대략적인 금액" }
       ],
@@ -111,7 +111,7 @@ const SOURCES = [
   { name: "호텔스컴바인 나니와구 호텔", url: "https://www.hotelscombined.co.kr/Place/Naniwa.htm" },
   { name: "KAYAK 나고야 호텔", url: "https://www.kayak.com/%E5%90%8D%E5%8F%A4%E5%B1%8B%E5%B8%82-%E3%83%9B%E3%83%86%E3%83%AB.2121.hotel.ksp" },
   { name: "라피트 운임 (ekitan)", url: "https://ekitan.com/en/article/rapit-alpha-jikoku-ryoukin" },
-  { name: "μ-SKY 운임 (ekitan)", url: "https://ekitan.com/en/article/musky-jikoku-ryoukin" },
+  { name: "뮤스카이(μ-SKY) 운임 (ekitan)", url: "https://ekitan.com/en/article/musky-jikoku-ryoukin" },
   { name: "나고야 교통국 승차권", url: "https://www.kotsu.city.nagoya.jp/en/pc/TICKET/TRP0001071.htm" },
   { name: "오사카 지하철 1일권", url: "https://www.japan-travel-kit.com/guides/transport/osaka-metro-pass" },
   { name: "지브리 파크 티켓", url: "https://ghibli-park.jp/en/ticket/" },

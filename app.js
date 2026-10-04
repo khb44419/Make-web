@@ -153,7 +153,7 @@ function budgetTotal(b) {
 }
 function renderCityCovers() {
   $("city-pick").innerHTML = Object.entries(CITIES).map(([key, c]) =>
-    `<a class="city-card" href="#/${key}">${photo(c.cover, c.kanji, "cover", true)}<span class="kanji">${c.kanji}</span><b>${c.name}</b><small>${esc(c.pickLine)}</small></a>`).join("");
+    `<a class="city-card" href="#/${key}">${photo(c.cover, c.kanji, "cover", true)}<span class="theme">${esc(c.name)} · ${esc(c.theme)}</span><b>${esc(c.catch)}</b><small>${esc(c.pickLine)}</small></a>`).join("");
   loadPhotos($("city-pick"));
 }
 renderCityCovers();
@@ -227,6 +227,8 @@ function renderCity() {
   document.title = `${c.name} · 매화 여행 플래너`;
   $("city-name").textContent = c.name;
   $("city-kanji").textContent = c.kanji;
+  $("city-catch").textContent = c.catch;
+  $("city-theme").textContent = c.theme;
   $("city-tagline").textContent = c.tagline;
   $("weather").textContent = c.weather;
   $("transport").textContent = c.transport;
@@ -266,7 +268,8 @@ function renderPlan() {
   const latlngs = stops.map(s => s.pos);
   if (!planMap._dead) {
   L.polyline(latlngs, { color: getComputedStyle(document.documentElement).getPropertyValue("--ume").trim(), weight: 4, dashArray: "8 8", opacity: .9 }).addTo(planMap._layer);
-  stops.forEach((s, i) => L.marker(s.pos, { icon: pinIcon(i + 1, s.kind === "spot" ? "spot" : s.kind) }).bindPopup(popupHtml(s)).addTo(planMap._layer));
+  const seen = new Set(); // 같은 곳으로 돌아오는 경우(숙소 복귀) 핀이 겹치지 않게 처음 것만 표시
+  stops.forEach((s, i) => !seen.has(s.name) && seen.add(s.name) && L.marker(s.pos, { icon: pinIcon(i + 1, s.kind === "spot" ? "spot" : s.kind) }).bindPopup(popupHtml(s)).addTo(planMap._layer));
   setTimeout(() => { planMap.invalidateSize(); planMap.fitBounds(latlngs, { padding: [36, 36], maxZoom: 15 }); }, 0);
   }
 

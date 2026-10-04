@@ -17,6 +17,26 @@ def get(url, binary=False):
     return data if binary else json.loads(data)
 
 
+def commons_search(query, skip):
+    """search:키워드 → 위키미디어 공용(Commons)에서 사진 파일을 검색해 차례로 돌려준다."""
+    url = ("https://commons.wikimedia.org/w/api.php?action=query&format=json&generator=search&gsrnamespace=6"
+           f"&gsrlimit=15&gsrsearch={urllib.parse.quote('filetype:bitmap ' + query)}"
+           "&prop=imageinfo&iiprop=url|size|mime&iiurlwidth=960")
+    try:
+        pages = get(url).get("query", {}).get("pages", {})
+    except Exception as e:
+        print(f"  - search:{query}: 실패 ({e})")
+        return []
+    out = []
+    for p in sorted(pages.values(), key=lambda p: p.get("index", 0)):
+        ii = (p.get("imageinfo") or [{}])[0]
+        if ii.get("mime") != "image/jpeg" or ii.get("width", 0) < 800 or ii.get("width", 0) < ii.get("height", 1):
+            continue  # 가로 사진(JPEG)만
+        out.append({"orig": ii["url"], "width": ii["width"], "thumb": ii.get("thumburl", ii["url"]),
+                    "page": ii.get("descriptionurl", ""), "title": p["title"].replace("File:", "")})
+    return out
+
+
 def summary(cand):
     lang, title = ("en", cand[3:]) if cand.startswith("en:") else ("ja", cand)
     url = f"https://{lang}.wikipedia.org/api/rest_v1/page/summary/{urllib.parse.quote(title.replace(' ', '_'), safe='')}"
@@ -99,8 +119,14 @@ def main():
         seen = used.setdefault(group, set())
         hashes = used.setdefault(group + ":hash", [])
         print(key)
+        infos = []
         for cand in cands:
-            info = summary(cand)
+            if cand.startswith("search:"):
+                infos += [(cand, i) for i in commons_search(cand[7:], seen)]
+            else:
+                infos.append((cand, None))
+        for cand, info in infos:
+            info = info or summary(cand)
             if not info:
                 continue
             file_id = info["orig"].rsplit("/", 1)[-1]

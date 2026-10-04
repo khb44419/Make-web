@@ -38,16 +38,21 @@ function resolveStop(city, key) {
 
 // ===== 사진 (위키백과 대표 사진) =====
 // 위키백과 요약 API에서 대표 사진을 받아와 data-wiki 요소의 배경으로 넣는다. 결과는 브라우저에 저장해 재사용.
-const imgCache = store.get("img:v1", {});
+const imgCache = store.get("img:v2", {});
 async function wikiImage(title) {
   if (title in imgCache) return imgCache[title];
   try {
     const r = await fetch(`https://ja.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(title)}`);
-    if (!r.ok) { if (r.status === 404) { imgCache[title] = null; store.set("img:v1", imgCache); } return null; }
+    if (!r.ok) { if (r.status === 404) { imgCache[title] = null; store.set("img:v2", imgCache); } return null; }
     const j = await r.json();
-    const src = j.thumbnail && (j.originalimage && j.originalimage.width <= 800 ? j.originalimage.source : j.thumbnail.source.replace(/\/\d+px-/, "/640px-"));
-    const v = src ? { src, page: (j.content_urls && j.content_urls.mobile && j.content_urls.mobile.page) || `https://ja.wikipedia.org/wiki/${encodeURIComponent(title)}` } : null;
-    imgCache[title] = v; store.set("img:v1", imgCache);
+    // 위키미디어는 정해진 크기(250·330·500·960px 등)의 썸네일만 안정적으로 준다.
+    // 500px → API가 준 기본 썸네일 → (작은 경우) 원본 순서로 시도한다.
+    const t = j.thumbnail && j.thumbnail.source, o = j.originalimage, srcs = [];
+    if (t && o && o.width > 500 && /\/\d+px-/.test(t)) srcs.push(t.replace(/\/\d+px-/, "/500px-"));
+    if (t) srcs.push(t);
+    if (o && o.width <= 1000) srcs.push(o.source);
+    const v = srcs.length ? { srcs, page: (j.content_urls && j.content_urls.mobile && j.content_urls.mobile.page) || `https://ja.wikipedia.org/wiki/${encodeURIComponent(title)}` } : null;
+    imgCache[title] = v; store.set("img:v2", imgCache);
     return v;
   } catch { return null; }
 }
@@ -59,12 +64,17 @@ function loadPhotos(root = document) {
     el.classList.add("tried");
     const v = await wikiImage(el.dataset.wiki);
     if (!v) return;
-    const img = new Image();
-    img.onload = () => {
-      el.style.backgroundImage = `url("${v.src}")`; el.classList.add("loaded");
-      const a = el.querySelector(".credit"); if (a) a.href = v.page;
+    const tryLoad = i => {
+      if (i >= v.srcs.length) return;
+      const img = new Image();
+      img.onload = () => {
+        el.style.backgroundImage = `url("${v.srcs[i]}")`; el.classList.add("loaded");
+        const a = el.querySelector(".credit"); if (a) a.href = v.page;
+      };
+      img.onerror = () => tryLoad(i + 1);
+      img.src = v.srcs[i];
     };
-    img.src = v.src;
+    tryLoad(0);
   });
 }
 

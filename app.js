@@ -190,6 +190,13 @@ function route() {
 }
 addEventListener("hashchange", route);
 
+// 지도 · 예산 · 준비물 카드 일러스트
+const TOOL_ART = {
+  map: `<svg viewBox="0 0 80 64" aria-hidden="true"><path d="M6 14l22-8 24 8 22-8v44l-22 8-24-8-22 8z" fill="rgba(255,255,255,.18)" stroke="#fff" stroke-width="2" stroke-linejoin="round"/><path d="M28 6v44M52 14v44" stroke="rgba(255,255,255,.55)" stroke-width="1.5" stroke-dasharray="3 3"/><path d="M14 44c10-18 18 4 28-10s10-6 20-18" fill="none" stroke="#ffd9e3" stroke-width="2.5" stroke-dasharray="1 5" stroke-linecap="round"/><path d="M60 26c-5-8-12-4-12 3 0 5 6 9 12 15 6-6 12-10 12-15 0-7-7-11-12-3z" transform="translate(-8 -10) scale(.8)" fill="#fff"/><circle cx="52" cy="19" r="3" fill="#e0356b"/></svg>`,
+  money: `<svg viewBox="0 0 80 64" aria-hidden="true"><ellipse cx="30" cy="52" rx="22" ry="7" fill="rgba(0,0,0,.18)"/><g stroke="#fff" stroke-width="2"><ellipse cx="30" cy="46" rx="20" ry="6.5" fill="#f1d27a"/><ellipse cx="30" cy="40" rx="20" ry="6.5" fill="#f6dc92"/><ellipse cx="30" cy="34" rx="20" ry="6.5" fill="#fbe7ad"/></g><circle cx="54" cy="26" r="15" fill="#fff4d6" stroke="#fff" stroke-width="2"/><text x="54" y="33" text-anchor="middle" font-size="21" font-weight="700" fill="#b07a12" font-family="sans-serif">¥</text><circle cx="22" cy="14" r="2.5" fill="#fff"/><circle cx="14" cy="22" r="1.6" fill="#fff"/></svg>`,
+  pack: `<svg viewBox="0 0 80 64" aria-hidden="true"><path d="M30 18v-5a4 4 0 014-4h12a4 4 0 014 4v5" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round"/><rect x="12" y="18" width="56" height="38" rx="8" fill="#fff4f6" stroke="#fff" stroke-width="2"/><rect x="12" y="30" width="56" height="4" fill="#f3c3d1"/><rect x="34" y="28" width="12" height="8" rx="2" fill="#e0356b"/><path d="M26 44l5 5 10-10" fill="none" stroke="#e0356b" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M52 42h10M52 48h7" stroke="#f3c3d1" stroke-width="3" stroke-linecap="round"/></svg>`
+};
+
 function renderCity() {
   const c = CITIES[state.city], k = state.city;
   document.title = `${c.name} · 설레는 일본여행`;
@@ -210,10 +217,10 @@ function renderCity() {
       <a class="m-photo" href="#/${k}/sights"><span class="m-img"${bg(firstSight && firstSight.id)}></span><span class="m-text"><small>景</small><b>관광지</b></span></a>
     </div>
     <div class="m-three">
-      <a href="#/${k}/map"><span class="ico">図</span><b>지도</b></a>
-      <a href="#/${k}/budget"><span class="ico">銭</span><b>예산</b></a>
-      <a href="#/${k}/pack"><span class="ico">荷</span><b>준비물</b></a>
-    </div>`;
+      <a class="m-tool t-map" href="#/${k}/map">${TOOL_ART.map}<b>지도</b><small>모든 장소 한눈에</small></a>
+      <a class="m-tool t-money" href="#/${k}/budget">${TOOL_ART.money}<b>예산</b><small>${won(budgetTotal(getBudget(k)) / 10000).replace("원", "")}만원 예상</small></a>
+      <a class="m-tool t-pack" href="#/${k}/pack">${TOOL_ART.pack}<b>준비물</b><small>${CHECK_ITEMS.filter(t => state.checked.has(t)).length}/${CHECK_ITEMS.length} 챙겼어요</small></a>
+        </div>`;
 }
 
 let prevView = null;

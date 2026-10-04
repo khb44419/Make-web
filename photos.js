@@ -2,13 +2,13 @@
 const PHOTOS = {
  "cover:osaka": {
   "src": "images/p001.jpg",
-  "page": "https://ja.wikipedia.org/wiki/%E9%81%93%E9%A0%93%E5%A0%80",
-  "title": "道頓堀"
+  "page": "https://en.wikipedia.org/wiki/Osaka",
+  "title": "Osaka"
  },
  "cover:nagoya": {
   "src": "images/p002.jpg",
-  "page": "https://ja.wikipedia.org/wiki/%E7%99%BD%E5%B7%9D%E9%83%B7",
-  "title": "白川郷"
+  "page": "https://ja.wikipedia.org/wiki/%E7%99%BD%E5%B7%9D%E9%83%B7%E3%83%BB%E4%BA%94%E7%AE%87%E5%B1%B1%E3%81%AE%E5%90%88%E6%8E%8C%E9%80%A0%E3%82%8A%E9%9B%86%E8%90%BD",
+  "title": "白川郷・五箇山の合掌造り集落"
  },
  "osaka:오사카성": {
   "src": "images/p003.jpg",
@@ -67,23 +67,23 @@ const PHOTOS = {
  },
  "osaka:키노피오 카페 (USJ)": {
   "src": "images/p014.jpg",
-  "page": "https://ja.wikipedia.org/wiki/%E3%82%B9%E3%83%BC%E3%83%91%E3%83%BC%E3%83%BB%E3%83%8B%E3%83%B3%E3%83%86%E3%83%B3%E3%83%89%E3%83%BC%E3%83%BB%E3%83%AF%E3%83%BC%E3%83%AB%E3%83%89",
-  "title": "スーパー・ニンテンドー・ワールド"
- },
- "osaka:버터비어 (해리포터 구역)": {
-  "src": "images/p015.jpg",
-  "page": "https://en.wikipedia.org/wiki/The_Wizarding_World_of_Harry_Potter_(Universal_Studios_Japan)",
-  "title": "The Wizarding World of Harry Potter (Universal Studios Japan)"
+  "page": "https://ja.wikipedia.org/wiki/%E3%83%8F%E3%83%B3%E3%83%90%E3%83%BC%E3%82%B0",
+  "title": "ハンバーグ"
  },
  "osaka:오사카 타코야키 뮤지엄": {
-  "src": "images/p016.jpg",
+  "src": "images/p015.jpg",
   "page": "https://ja.wikipedia.org/wiki/%E3%83%A6%E3%83%8B%E3%83%90%E3%83%BC%E3%82%B5%E3%83%AB%E3%83%BB%E3%82%B7%E3%83%86%E3%82%A3%E3%82%A6%E3%82%A9%E3%83%BC%E3%82%AF%E5%A4%A7%E9%98%AA",
   "title": "ユニバーサル・シティウォーク大阪"
  },
  "osaka:나니와 쿠이신보 요코초": {
-  "src": "images/p017.jpg",
+  "src": "images/p016.jpg",
   "page": "https://ja.wikipedia.org/wiki/%E5%A4%A9%E4%BF%9D%E5%B1%B1%E3%83%8F%E3%83%BC%E3%83%90%E3%83%BC%E3%83%93%E3%83%AC%E3%83%83%E3%82%B8",
   "title": "天保山ハーバービレッジ"
+ },
+ "osaka:오코노미야키 키지 (다키미코지)": {
+  "src": "images/p017.jpg",
+  "page": "https://ja.wikipedia.org/wiki/%E7%84%BC%E3%81%8D%E3%81%9D%E3%81%B0",
+  "title": "焼きそば"
  },
  "osaka:쿠시카츠 다루마 신세카이 총본점": {
   "src": "images/p018.jpg",
@@ -120,95 +120,95 @@ const PHOTOS = {
   "page": "https://ja.wikipedia.org/wiki/%E3%82%AA%E3%82%A2%E3%82%B7%E3%82%B921",
   "title": "オアシス21"
  },
- "nagoya:해리포터 마호도코로": {
-  "src": "images/p025.jpg",
-  "page": "https://en.wikipedia.org/wiki/Harry_Potter",
-  "title": "Harry Potter"
- },
  "nagoya:도토리공화국 (지브리스토어)": {
-  "src": "images/p026.jpg",
+  "src": "images/p025.jpg",
   "page": "https://ja.wikipedia.org/wiki/%E3%82%B9%E3%82%BF%E3%82%B8%E3%82%AA%E3%82%B8%E3%83%96%E3%83%AA",
   "title": "スタジオジブリ"
  },
  "nagoya:시라카와고": {
-  "src": "images/p027.jpg",
+  "src": "images/p026.jpg",
   "page": "https://ja.wikipedia.org/wiki/%E7%99%BD%E5%B7%9D%E9%83%B7",
   "title": "白川郷"
  },
  "nagoya:다카야마 옛 거리": {
-  "src": "images/p028.jpg",
+  "src": "images/p027.jpg",
   "page": "https://ja.wikipedia.org/wiki/%E9%AB%98%E5%B1%B1%E9%99%A3%E5%B1%8B",
   "title": "高山陣屋"
  },
  "nagoya:지브리 파크": {
-  "src": "images/p029.jpg",
+  "src": "images/p028.jpg",
   "page": "https://ja.wikipedia.org/wiki/%E3%82%B5%E3%83%84%E3%82%AD%E3%81%A8%E3%83%A1%E3%82%A4%E3%81%AE%E5%AE%B6",
   "title": "サツキとメイの家"
  },
  "nagoya:아츠타 신궁": {
-  "src": "images/p030.jpg",
+  "src": "images/p029.jpg",
   "page": "https://ja.wikipedia.org/wiki/%E7%86%B1%E7%94%B0%E7%A5%9E%E5%AE%AE",
   "title": "熱田神宮"
  },
  "nagoya:시라토리 정원": {
-  "src": "images/p031.jpg",
+  "src": "images/p030.jpg",
   "page": "https://ja.wikipedia.org/wiki/%E7%99%BD%E9%B3%A5%E5%BA%AD%E5%9C%92",
   "title": "白鳥庭園"
  },
  "nagoya:돈키호테 사카에 본점": {
-  "src": "images/p032.jpg",
+  "src": "images/p031.jpg",
   "page": "https://en.wikipedia.org/wiki/Don_Quijote_(store)",
   "title": "Don Quijote (store)"
  },
  "nagoya:나고야성": {
-  "src": "images/p033.jpg",
+  "src": "images/p032.jpg",
   "page": "https://ja.wikipedia.org/wiki/%E5%90%8D%E5%8F%A4%E5%B1%8B%E5%9F%8E",
   "title": "名古屋城"
  },
  "nagoya:미소카츠 야바톤 본점": {
-  "src": "images/p034.jpg",
+  "src": "images/p033.jpg",
   "page": "https://ja.wikipedia.org/wiki/%E7%9F%A2%E5%A0%B4%E3%81%A8%E3%82%93",
   "title": "矢場とん"
  },
  "nagoya:리상 대만 가라아게": {
-  "src": "images/p035.jpg",
+  "src": "images/p034.jpg",
   "page": "https://ja.wikipedia.org/wiki/%E3%81%8B%E3%82%89%E6%8F%9A%E3%81%92",
   "title": "から揚げ"
  },
  "nagoya:테바사키 세카이노 야만짱": {
-  "src": "images/p036.jpg",
-  "page": "https://ja.wikipedia.org/wiki/%E3%82%A8%E3%82%B9%E3%83%AF%E3%82%A4%E3%83%95%E3%83%BC%E3%83%89",
-  "title": "エスワイフード"
+  "src": "images/p035.jpg",
+  "page": "https://ja.wikipedia.org/wiki/%E9%B6%8F%E8%82%89",
+  "title": "鶏肉"
  },
  "nagoya:시라카와고 푸딩의 집": {
-  "src": "images/p037.jpg",
+  "src": "images/p036.jpg",
   "page": "https://en.wikipedia.org/wiki/Cr%C3%A8me_caramel",
   "title": "Crème caramel"
  },
  "nagoya:고헤이모치 (시라오기)": {
-  "src": "images/p038.jpg",
+  "src": "images/p037.jpg",
   "page": "https://ja.wikipedia.org/wiki/%E4%BA%94%E5%B9%B3%E9%A4%85",
   "title": "五平餅"
  },
  "nagoya:미야마 두부 카페": {
-  "src": "images/p039.jpg",
+  "src": "images/p038.jpg",
   "page": "https://en.wikipedia.org/wiki/Tofu",
   "title": "Tofu"
  },
  "nagoya:히다규 초밥 코테우시": {
-  "src": "images/p040.jpg",
+  "src": "images/p039.jpg",
   "page": "https://ja.wikipedia.org/wiki/%E9%A3%9B%E9%A8%A8%E7%89%9B",
   "title": "飛騨牛"
  },
  "nagoya:미타라시 당고": {
-  "src": "images/p041.jpg",
+  "src": "images/p040.jpg",
   "page": "https://ja.wikipedia.org/wiki/%E3%81%BF%E3%81%9F%E3%82%89%E3%81%97%E5%9B%A3%E5%AD%90",
   "title": "みたらし団子"
  },
  "nagoya:다카야마 라멘": {
-  "src": "images/p042.jpg",
+  "src": "images/p041.jpg",
   "page": "https://ja.wikipedia.org/wiki/%E9%AB%98%E5%B1%B1%E3%83%A9%E3%83%BC%E3%83%A1%E3%83%B3",
   "title": "高山ラーメン"
+ },
+ "nagoya:대창고 카페 '대륙횡단비행'": {
+  "src": "images/p042.jpg",
+  "page": "https://ja.wikipedia.org/wiki/%E3%82%B5%E3%83%B3%E3%83%89%E3%82%A4%E3%83%83%E3%83%81",
+  "title": "サンドイッチ"
  },
  "nagoya:마녀의 계곡 '하늘을 나는 오븐'": {
   "src": "images/p043.jpg",

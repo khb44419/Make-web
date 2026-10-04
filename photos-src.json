@@ -277,10 +277,18 @@
     "en:Miya-no-watashi",
     "熱田区"
   ],
-  "_preview": [
-    "Super Nintendo World Universal Studios Japan",
-    "Super Nintendo World entrance",
-    "Totoro Ghibli Park",
-    "Satsuki and Mei's House"
+  "icon:nintendo": [
+    "file:Super Nintendo World Theme Park at USJ Osaka Evening Sky.jpg",
+    "file:Super Nintendo World in Universal Studios Japan (53851790346).jpg"
+  ],
+  "icon:nintendo2": [
+    "file:Super Nintendo World in Universal Studios Japan (53851790346).jpg"
+  ],
+  "icon:ghibli": [
+    "file:Mei and Satsuki's house (39706397990).jpg",
+    "file:Satsuki and Mei's House 01.JPG"
+  ],
+  "icon:ghibli2": [
+    "file:Expo 2005 of Satsuki and Mei’s House 03.jpg"
   ]
 }

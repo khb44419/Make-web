@@ -32,53 +32,21 @@ function places(city) {
 }
 function resolveStop(city, key) {
   const c = CITIES[city];
-  if (c.spots[key]) return { ...c.spots[key], kind: "spot" };
+  if (c.spots[key]) return { ...c.spots[key], kind: "spot", id: `spot:${city}:${key}` };
   return places(city).find(p => p.name === key);
 }
 
-// ===== 사진 (위키백과 대표 사진) =====
-// 위키백과 요약 API에서 대표 사진을 받아와 data-wiki 요소의 배경으로 넣는다. 결과는 브라우저에 저장해 재사용.
-const imgCache = store.get("img:v2", {});
-async function wikiImage(title) {
-  if (title in imgCache) return imgCache[title];
-  try {
-    const r = await fetch(`https://ja.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(title)}`);
-    if (!r.ok) { if (r.status === 404) { imgCache[title] = null; store.set("img:v2", imgCache); } return null; }
-    const j = await r.json();
-    // 위키미디어는 정해진 크기(250·330·500·960px 등)의 썸네일만 안정적으로 준다.
-    // 500px → API가 준 기본 썸네일 → (작은 경우) 원본 순서로 시도한다.
-    const t = j.thumbnail && j.thumbnail.source, o = j.originalimage, srcs = [];
-    if (t && o && o.width > 500 && /\/\d+px-/.test(t)) srcs.push(t.replace(/\/\d+px-/, "/500px-"));
-    if (t) srcs.push(t);
-    if (o && o.width <= 1000) srcs.push(o.source);
-    const v = srcs.length ? { srcs, page: (j.content_urls && j.content_urls.mobile && j.content_urls.mobile.page) || `https://ja.wikipedia.org/wiki/${encodeURIComponent(title)}` } : null;
-    imgCache[title] = v; store.set("img:v2", imgCache);
-    return v;
-  } catch { return null; }
-}
-// 링크 안에 들어가는 사진(첫 화면 도시 카드)은 출처를 링크 대신 글자로 표시 (a 안에 a 금지)
-const photo = (title, fallback, cls = "", inLink = false) => title
-  ? `<div class="ph ${cls}" data-wiki="${esc(title)}"><span class="ph-kanji">${esc(fallback)}</span>${inLink
-      ? `<span class="credit">사진 · 위키백과</span>` : `<a class="credit" target="_blank" rel="noopener">사진 · 위키백과</a>`}</div>`
-  : `<div class="ph ${cls}"><span class="ph-kanji">${esc(fallback)}</span></div>`;
-function loadPhotos(root = document) {
-  root.querySelectorAll(".ph[data-wiki]:not(.tried)").forEach(async el => {
-    el.classList.add("tried");
-    const v = await wikiImage(el.dataset.wiki);
-    if (!v) return;
-    const tryLoad = i => {
-      if (i >= v.srcs.length) return;
-      const img = new Image();
-      img.onload = () => {
-        el.style.backgroundImage = `url("${v.srcs[i]}")`; el.classList.add("loaded");
-        const a = el.querySelector("a.credit"); if (a) a.href = v.page;
-      };
-      img.onerror = () => tryLoad(i + 1);
-      img.src = v.srcs[i];
-    };
-    tryLoad(0);
-  });
-}
+// ===== 사진 =====
+// 사진은 GitHub Actions(scripts/fetch_photos.py)가 위키백과에서 미리 받아 images/ 에 넣어 둔다.
+// PHOTOS[id] = { src, page } (photos.js). 사진이 없으면 한자 글자로 표시.
+const photo = (id, fallback, cls = "", inLink = false) => {
+  const p = typeof PHOTOS !== "undefined" && PHOTOS[id];
+  if (!p) return `<div class="ph ${cls}"><span class="ph-kanji">${esc(fallback)}</span></div>`;
+  const credit = inLink ? `<span class="credit">사진 · 위키백과</span>`
+    : `<a class="credit" href="${esc(p.page)}" target="_blank" rel="noopener">사진 · 위키백과</a>`;
+  return `<div class="ph loaded ${cls}" style="background-image:url('${esc(p.src)}')">${credit}</div>`;
+};
+function loadPhotos() {} // 사진이 미리 들어 있어 따로 불러올 필요 없음
 
 // ===== D-day 도장 =====
 const days = Math.ceil((new Date("2027-02-01T00:00:00") - new Date()) / 86400000);
@@ -153,7 +121,7 @@ function budgetTotal(b) {
 }
 function renderCityCovers() {
   $("city-pick").innerHTML = Object.entries(CITIES).map(([key, c]) =>
-    `<a class="city-card" href="#/${key}">${photo(c.cover, c.kanji, "cover", true)}<span class="theme">${esc(c.name)} · ${esc(c.theme)}</span><b>${esc(c.catch)}</b><small>${esc(c.pickLine)}</small></a>`).join("");
+    `<a class="city-card" href="#/${key}">${photo(`cover:${key}`, c.kanji, "cover", true)}<span class="theme">${esc(c.name)} · ${esc(c.theme)}</span><b>${esc(c.catch)}</b><small>${esc(c.pickLine)}</small></a>`).join("");
   loadPhotos($("city-pick"));
 }
 renderCityCovers();
@@ -283,7 +251,7 @@ function renderPlan() {
   $("plan-stops").innerHTML = stops.map((s, i) => `<li>
       <span class="num ${s.kind === "spot" ? "spot" : ""}">${i + 1}</span>
       <div><b>${esc(s.name)}</b>${s.desc ? `<p>${esc(s.desc)}</p>` : ""}<a href="${gmapsSearch(s.q)}" target="_blank" rel="noopener">구글 지도 ↗</a></div>
-      ${photo(s.wiki, s.kind === "spot" ? "駅" : s.kind === "foods" ? "食" : "景", "thumb")}
+      ${photo(s.id, s.kind === "spot" ? "駅" : s.kind === "foods" ? "食" : "景", "thumb")}
     </li>`).join("");
   loadPhotos($("plan-stops"));
   $("plan-tips").innerHTML = `<li><b>Day ${state.day + 1} · ${esc(d.title)}</b></li>` + d.tips.map(t => `<li>${esc(t)}</li>`).join("");
@@ -297,7 +265,7 @@ function renderPlan() {
 function placeCard(p) {
   const on = state.picks.has(p.id);
   return `<li>
-      ${photo(p.wiki, p.kind === "foods" ? "食" : "景")}
+      ${photo(p.id, p.kind === "foods" ? "食" : "景")}
       <div class="row">
         <div class="body">${p.type ? `<span class="ftype">${esc(p.type)}</span>` : ""}<b>${esc(p.name)}</b><p>${esc(p.desc)}</p>
           <div class="links"><a href="${gmapsSearch(p.q)}" target="_blank" rel="noopener">구글 지도 ↗</a>

@@ -137,8 +137,8 @@ const PHOTOS = {
  },
  "nagoya:시라카와고": {
   "src": "images/p028.jpg",
-  "page": "https://commons.wikimedia.org/wiki/File:Snow_in_Ogimachi_Area,_Shirakawa_village,_Gifu.JPG",
-  "title": "Snow in Ogimachi Area, Shirakawa village, Gifu.JPG"
+  "page": "https://commons.wikimedia.org/wiki/File:Shirakawa-go_winter_(51815452116).jpg",
+  "title": "Shirakawa-go winter (51815452116).jpg"
  },
  "nagoya:다카야마 옛 거리": {
   "src": "images/p029.jpg",
@@ -291,12 +291,12 @@ const PHOTOS = {
   "title": "愛知高速交通東部丘陵線"
  },
  "hero:nagoya:3": {
-  "src": "images/p063.jpg",
-  "page": "https://commons.wikimedia.org/wiki/File:Gassho-zukuri_2.jpg",
-  "title": "Gassho-zukuri 2.jpg"
+  "src": "images/p064.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:Winter_in_Shirakawa-go_(51815451686).jpg",
+  "title": "Winter in Shirakawa-go (51815451686).jpg"
  },
  "hero:nagoya:4": {
-  "src": "images/p064.jpg",
+  "src": "images/p065.jpg",
   "page": "https://ja.wikipedia.org/wiki/%E4%B8%83%E9%87%8C%E3%81%AE%E6%B8%A1%E3%81%97",
   "title": "七里の渡し"
  }

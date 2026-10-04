@@ -1,57 +1,242 @@
 {
   "_설명": "장소별 사진 후보(위키백과 문서 제목). 앞에서부터 차례로 시도하고, 같은 도시 안에서 이미 쓴 사진은 건너뛴다. 'en:'은 영어 위키백과.",
-  "cover:osaka": ["道頓堀", "en:Dōtonbori"],
-  "cover:nagoya": ["白川郷", "en:Shirakawa-gō"],
-
-  "osaka:오사카성": ["大阪城", "en:Osaka Castle"],
-  "osaka:도톤보리": ["道頓堀", "en:Dōtonbori", "グリコサイン"],
-  "osaka:유니버설 스튜디오 재팬": ["ユニバーサル・スタジオ・ジャパン", "en:Universal Studios Japan"],
-  "osaka:우메다 스카이빌딩": ["梅田スカイビル", "en:Umeda Sky Building"],
-  "osaka:신세카이 · 츠텐카쿠": ["通天閣", "en:Tsūtenkaku", "新世界 (大阪)"],
-  "osaka:가이유칸 수족관": ["海遊館", "en:Osaka Aquarium Kaiyukan"],
-  "osaka:타코야키 와나카": ["たこ焼き", "en:Takoyaki"],
-  "osaka:오코노미야키 미즈노": ["お好み焼き", "en:Okonomiyaki"],
-  "osaka:킨류 라멘": ["金龍ラーメン", "en:Tonkotsu ramen", "とんこつラーメン"],
-  "osaka:551 호라이 본점": ["551蓬莱", "豚まん", "en:Nikuman", "肉まん"],
-  "osaka:릭쿠로 아저씨 치즈케이크": ["りくろーおじさんの店", "en:Japanese cheesecake", "チーズケーキ"],
-  "osaka:키노피오 카페 (USJ)": ["スーパー・ニンテンドー・ワールド", "en:Super Nintendo World"],
-  "osaka:버터비어 (해리포터 구역)": ["en:Butterbeer", "バタービール", "en:The Wizarding World of Harry Potter (Universal Studios Japan)"],
-  "osaka:오사카 타코야키 뮤지엄": ["ユニバーサル・シティウォーク大阪", "en:Universal CityWalk", "en:Universal City Station"],
-  "osaka:나니와 쿠이신보 요코초": ["天保山マーケットプレース", "天保山大観覧車", "en:Tempozan Ferris Wheel"],
-  "osaka:오코노미야키 키지 (다키미코지)": ["モダン焼き", "en:Modan-yaki"],
-  "osaka:쿠시카츠 다루마 신세카이 총본점": ["串カツ", "en:Kushikatsu"],
-  "osaka:쿠시카츠 야에카츠": ["ジャンジャン横丁", "en:Janjan Yokochō"],
-  "spot:osaka:airport": ["関西国際空港", "en:Kansai International Airport"],
-  "spot:osaka:base": ["難波駅 (南海)", "なんば駅", "en:Namba Station"],
-
-  "nagoya:오스 상점가": ["大須商店街", "大須観音", "en:Ōsu Kannon"],
-  "nagoya:나고야 파르코 · 포켓몬센터": ["名古屋パルコ", "en:Pokémon Center", "ポケモンセンター"],
-  "nagoya:사카에 · 오아시스21": ["オアシス21", "en:Oasis 21"],
-  "nagoya:해리포터 마호도코로": ["en:Harry Potter", "ハリー・ポッターシリーズ"],
-  "nagoya:도토리공화국 (지브리스토어)": ["どんぐり共和国", "en:Studio Ghibli", "スタジオジブリ"],
-  "nagoya:시라카와고": ["白川郷", "白川郷・五箇山の合掌造り集落", "en:Shirakawa-gō"],
-  "nagoya:다카야마 옛 거리": ["高山陣屋", "en:Takayama Jin'ya", "en:Takayama, Gifu"],
-  "nagoya:지브리 파크": ["サツキとメイの家", "en:Satsuki and Mei's House", "愛・地球博記念公園"],
-  "nagoya:아츠타 신궁": ["熱田神宮", "en:Atsuta Shrine"],
-  "nagoya:시라토리 정원": ["白鳥庭園", "en:Shirotori Garden"],
-  "nagoya:돈키호테 사카에 본점": ["en:Don Quijote (store)", "ドン・キホーテ (企業)"],
-  "nagoya:나고야성": ["名古屋城", "en:Nagoya Castle"],
-  "nagoya:미소카츠 야바톤 본점": ["矢場とん", "味噌カツ", "en:Misokatsu"],
-  "nagoya:리상 대만 가라아게": ["唐揚げ", "en:Karaage"],
-  "nagoya:테바사키 세카이노 야만짱": ["世界の山ちゃん", "手羽先", "en:Tebasaki"],
-  "nagoya:시라카와고 푸딩의 집": ["プリン", "en:Custard pudding", "カスタードプディング"],
-  "nagoya:고헤이모치 (시라오기)": ["五平餅", "en:Gohei mochi"],
-  "nagoya:미야마 두부 카페": ["石豆腐", "豆腐", "en:Tofu"],
-  "nagoya:히다규 초밥 코테우시": ["飛騨牛", "en:Hida beef"],
-  "nagoya:미타라시 당고": ["みたらし団子", "en:Mitarashi dango"],
-  "nagoya:다카야마 라멘": ["高山ラーメン", "en:Takayama ramen", "中華そば"],
-  "nagoya:대창고 카페 '대륙횡단비행'": ["en:Ghibli Park"],
-  "nagoya:마녀의 계곡 '하늘을 나는 오븐'": ["愛・地球博記念公園", "en:Expo 2005 Aichi Commemorative Park"],
-  "nagoya:로톤다 카제가오카": ["おにぎり", "en:Onigiri"],
-  "nagoya:키시멘 스미요시 (나고야역)": ["きしめん", "en:Kishimen"],
-  "nagoya:미야 키시멘 (아츠타 신궁 경내)": ["宮きしめん", "草薙剣"],
-  "nagoya:아츠타 호라이켄 본점 (히츠마부시)": ["あつた蓬莱軒", "ひつまぶし", "en:Hitsumabushi"],
-  "nagoya:시라토리 정원 찻집": ["抹茶", "en:Matcha", "和菓子"],
-  "spot:nagoya:airport": ["中部国際空港", "en:Chubu Centrair International Airport"],
-  "spot:nagoya:base": ["名古屋駅", "en:Nagoya Station"]
+  "cover:osaka": [
+    "en:Osaka",
+    "グリコサイン",
+    "道頓堀"
+  ],
+  "cover:nagoya": [
+    "白川郷・五箇山の合掌造り集落",
+    "en:Historic Villages of Shirakawa-gō and Gokayama",
+    "白川郷"
+  ],
+  "osaka:오사카성": [
+    "大阪城",
+    "en:Osaka Castle"
+  ],
+  "osaka:도톤보리": [
+    "道頓堀",
+    "en:Dōtonbori",
+    "グリコサイン"
+  ],
+  "osaka:유니버설 스튜디오 재팬": [
+    "ユニバーサル・スタジオ・ジャパン",
+    "en:Universal Studios Japan"
+  ],
+  "osaka:우메다 스카이빌딩": [
+    "梅田スカイビル",
+    "en:Umeda Sky Building"
+  ],
+  "osaka:신세카이 · 츠텐카쿠": [
+    "通天閣",
+    "en:Tsūtenkaku",
+    "新世界 (大阪)"
+  ],
+  "osaka:가이유칸 수족관": [
+    "海遊館",
+    "en:Osaka Aquarium Kaiyukan"
+  ],
+  "osaka:타코야키 와나카": [
+    "たこ焼き",
+    "en:Takoyaki"
+  ],
+  "osaka:오코노미야키 미즈노": [
+    "お好み焼き",
+    "en:Okonomiyaki"
+  ],
+  "osaka:킨류 라멘": [
+    "金龍ラーメン",
+    "en:Tonkotsu ramen",
+    "とんこつラーメン"
+  ],
+  "osaka:551 호라이 본점": [
+    "551蓬莱",
+    "豚まん",
+    "en:Nikuman",
+    "肉まん"
+  ],
+  "osaka:릭쿠로 아저씨 치즈케이크": [
+    "りくろーおじさんの店",
+    "en:Japanese cheesecake",
+    "チーズケーキ"
+  ],
+  "osaka:키노피오 카페 (USJ)": [
+    "en:Super Nintendo World",
+    "スーパー・ニンテンドー・ワールド",
+    "ハンバーグ"
+  ],
+  "osaka:버터비어 (해리포터 구역)": [
+    "en:Butterbeer",
+    "en:The Wizarding World of Harry Potter (Universal Studios Japan)",
+    "en:Hogsmeade",
+    "ホグズミード"
+  ],
+  "osaka:오사카 타코야키 뮤지엄": [
+    "ユニバーサル・シティウォーク大阪",
+    "en:Universal CityWalk",
+    "en:Universal City Station"
+  ],
+  "osaka:나니와 쿠이신보 요코초": [
+    "天保山マーケットプレース",
+    "天保山大観覧車",
+    "en:Tempozan Ferris Wheel"
+  ],
+  "osaka:오코노미야키 키지 (다키미코지)": [
+    "モダン焼き",
+    "en:Modan-yaki",
+    "焼きそば",
+    "en:Yakisoba"
+  ],
+  "osaka:쿠시카츠 다루마 신세카이 총본점": [
+    "串カツ",
+    "en:Kushikatsu"
+  ],
+  "osaka:쿠시카츠 야에카츠": [
+    "ジャンジャン横丁",
+    "en:Janjan Yokochō"
+  ],
+  "spot:osaka:airport": [
+    "関西国際空港",
+    "en:Kansai International Airport"
+  ],
+  "spot:osaka:base": [
+    "難波駅 (南海)",
+    "なんば駅",
+    "en:Namba Station"
+  ],
+  "nagoya:오스 상점가": [
+    "大須商店街",
+    "大須観音",
+    "en:Ōsu Kannon"
+  ],
+  "nagoya:나고야 파르코 · 포켓몬센터": [
+    "名古屋パルコ",
+    "en:Pokémon Center",
+    "ポケモンセンター"
+  ],
+  "nagoya:사카에 · 오아시스21": [
+    "オアシス21",
+    "en:Oasis 21"
+  ],
+  "nagoya:해리포터 마호도코로": [
+    "en:Harry Potter Shop at Platform 9¾",
+    "en:King's Cross railway station",
+    "en:Harry Potter (film series)"
+  ],
+  "nagoya:도토리공화국 (지브리스토어)": [
+    "どんぐり共和国",
+    "en:Studio Ghibli",
+    "スタジオジブリ"
+  ],
+  "nagoya:시라카와고": [
+    "白川郷",
+    "白川郷・五箇山の合掌造り集落",
+    "en:Shirakawa-gō"
+  ],
+  "nagoya:다카야마 옛 거리": [
+    "高山陣屋",
+    "en:Takayama Jin'ya",
+    "en:Takayama, Gifu"
+  ],
+  "nagoya:지브리 파크": [
+    "サツキとメイの家",
+    "en:Satsuki and Mei's House",
+    "愛・地球博記念公園"
+  ],
+  "nagoya:아츠타 신궁": [
+    "熱田神宮",
+    "en:Atsuta Shrine"
+  ],
+  "nagoya:시라토리 정원": [
+    "白鳥庭園",
+    "en:Shirotori Garden"
+  ],
+  "nagoya:돈키호테 사카에 본점": [
+    "en:Don Quijote (store)",
+    "ドン・キホーテ (企業)"
+  ],
+  "nagoya:나고야성": [
+    "名古屋城",
+    "en:Nagoya Castle"
+  ],
+  "nagoya:미소카츠 야바톤 본점": [
+    "矢場とん",
+    "味噌カツ",
+    "en:Misokatsu"
+  ],
+  "nagoya:리상 대만 가라아게": [
+    "唐揚げ",
+    "en:Karaage"
+  ],
+  "nagoya:테바사키 세카이노 야만짱": [
+    "手羽先",
+    "en:Tebasaki",
+    "en:Buffalo wing"
+  ],
+  "nagoya:시라카와고 푸딩의 집": [
+    "プリン",
+    "en:Custard pudding",
+    "カスタードプディング"
+  ],
+  "nagoya:고헤이모치 (시라오기)": [
+    "五平餅",
+    "en:Gohei mochi"
+  ],
+  "nagoya:미야마 두부 카페": [
+    "石豆腐",
+    "豆腐",
+    "en:Tofu"
+  ],
+  "nagoya:히다규 초밥 코테우시": [
+    "飛騨牛",
+    "en:Hida beef"
+  ],
+  "nagoya:미타라시 당고": [
+    "みたらし団子",
+    "en:Mitarashi dango"
+  ],
+  "nagoya:다카야마 라멘": [
+    "高山ラーメン",
+    "en:Takayama ramen",
+    "中華そば"
+  ],
+  "nagoya:대창고 카페 '대륙횡단비행'": [
+    "en:Ghibli Park",
+    "サンドイッチ",
+    "en:Sandwich"
+  ],
+  "nagoya:마녀의 계곡 '하늘을 나는 오븐'": [
+    "愛・地球博記念公園",
+    "en:Expo 2005 Aichi Commemorative Park"
+  ],
+  "nagoya:로톤다 카제가오카": [
+    "おにぎり",
+    "en:Onigiri"
+  ],
+  "nagoya:키시멘 스미요시 (나고야역)": [
+    "きしめん",
+    "en:Kishimen"
+  ],
+  "nagoya:미야 키시멘 (아츠타 신궁 경내)": [
+    "宮きしめん",
+    "草薙剣"
+  ],
+  "nagoya:아츠타 호라이켄 본점 (히츠마부시)": [
+    "あつた蓬莱軒",
+    "ひつまぶし",
+    "en:Hitsumabushi"
+  ],
+  "nagoya:시라토리 정원 찻집": [
+    "抹茶",
+    "en:Matcha",
+    "和菓子"
+  ],
+  "spot:nagoya:airport": [
+    "中部国際空港",
+    "en:Chubu Centrair International Airport"
+  ],
+  "spot:nagoya:base": [
+    "名古屋駅",
+    "en:Nagoya Station"
+  ]
 }

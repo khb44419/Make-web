@@ -29,8 +29,10 @@ def summary(cand):
     if not o or not t:
         print(f"  - {cand}: 대표 사진 없음")
         return None
-    if o["source"].lower().endswith(".svg"):
-        print(f"  - {cand}: SVG(로고)라 건너뜀")
+    name = o["source"].rsplit("/", 1)[-1]
+    # 로고 · 워드마크 · '사진 없음' 그림은 건너뛴다 (로고는 보통 SVG/PNG)
+    if name.lower().endswith((".svg", ".png", ".gif")) or re.search(r"logo|wordmark|no_?image|placeholder|symbol", name, re.I):
+        print(f"  - {cand}: 로고/아이콘 같은 그림이라 건너뜀 ({name})")
         return None
     return {"orig": o["source"], "width": o.get("width", 0), "thumb": t["source"],
             "page": j.get("content_urls", {}).get("mobile", {}).get("page", ""), "title": j.get("title", title)}
@@ -52,10 +54,17 @@ def download(info, dest_base):
         except Exception as e:
             print(f"    · {u[-60:]}: {e}")
             continue
-        ext = ".png" if u.lower().endswith(".png") else ".jpg"
-        path = dest_base + ext
-        with open(os.path.join(ROOT, path), "wb") as f:
-            f.write(data)
+        path = dest_base + ".jpg"
+        try:
+            from PIL import Image
+            import io
+            im = Image.open(io.BytesIO(data)).convert("RGB")
+            if im.width > 900:
+                im = im.resize((900, round(im.height * 900 / im.width)), Image.LANCZOS)
+            im.save(os.path.join(ROOT, path), "JPEG", quality=80, optimize=True, progressive=True)
+        except Exception as e:
+            print(f"    · 이미지 변환 실패: {e}")
+            continue
         return path
     return None
 
@@ -69,7 +78,8 @@ def main():
     for key, cands in src.items():
         if key.startswith("_"):
             continue
-        group = "cover" if key.startswith("cover:") else key.replace("spot:", "").split(":")[0]
+        # 도시별로 겹침을 막는다 (표지 사진도 그 도시 그룹에 포함)
+        group = key.replace("spot:", "").replace("cover:", "").split(":")[0]
         seen = used.setdefault(group, set())
         print(key)
         for cand in cands:

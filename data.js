@@ -4,6 +4,7 @@ const CITIES = {
   osaka: {
     name: "오사카",
     theme: "첫 일본 여행 코스",
+    menuPhotos: { foods: "타코야키 와나카", sights: "유니버설 스튜디오 재팬" },
     catch: "일본이 처음이라면, 오사카!",
     pickLine: "먹방 · 야경 · USJ · 수족관",
     kanji: "大阪",
@@ -65,6 +66,7 @@ const CITIES = {
   nagoya: {
     name: "나고야",
     theme: "겨울 감성 힐링 코스",
+    menuPhotos: { foods: "시라카와고 푸딩의 집", sights: "지브리 파크" },
     catch: "삿포로 부럽지 않은 겨울, 나고야!",
     pickLine: "시라카와고 눈마을 · 지브리 파크 · 온천",
     kanji: "名古屋",

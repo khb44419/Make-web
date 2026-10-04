@@ -183,7 +183,7 @@ function route() {
   $("screen-city").hidden = !valid || !!view;
   $("screen-detail").hidden = !valid || !view;
   petals.sync(!valid);
-  if (!valid) { renderCompare(); document.title = "매화 여행 플래너"; return scrollTo(0, 0); }
+  if (!valid) { renderCompare(); document.title = "우리의 첫 일본"; return scrollTo(0, 0); }
   state.city = city;
   if (!view) { renderCity(); return scrollTo(0, 0); }
   showView(view);
@@ -191,18 +191,29 @@ function route() {
 addEventListener("hashchange", route);
 
 function renderCity() {
-  const c = CITIES[state.city];
-  document.title = `${c.name} · 매화 여행 플래너`;
+  const c = CITIES[state.city], k = state.city;
+  document.title = `${c.name} · 우리의 첫 일본`;
   $("city-name").textContent = c.name;
   $("city-kanji").textContent = c.kanji;
-  $("city-catch").textContent = c.catch;
-  $("city-theme").textContent = c.theme;
-  $("city-tagline").textContent = c.tagline;
-  $("weather").textContent = c.weather;
-  $("transport").textContent = c.transport;
-  $("events").textContent = c.events.join(" / ");
-  $("menu").innerHTML = MENU.map(m =>
-    `<a href="#/${state.city}/${m.id}"><span class="ico">${m.ico}</span><b>${m.name}</b><small>${m.desc}</small></a>`).join("");
+  $("city-hero").innerHTML = `<div class="hero-img"${bg(`cover:${k}`)}></div>
+    <div class="hero-text"><span class="chip">${esc(c.theme)}</span><h2>${esc(c.catch)}</h2><p>${esc(c.tagline)}</p></div>`;
+  const facts = [["❄", "2월 날씨", c.weather], ["✈", "공항 → 시내", c.transport], ["✿", "2월 이벤트", c.events.join(" / ")]];
+  $("facts").innerHTML = facts.map(([i, t, v]) => `<div class="fact"><span class="fi">${i}</span><small>${t}</small><p>${esc(v)}</p></div>`).join("");
+  // 메뉴: 여행코스는 크게, 먹거리 · 관광지는 사진 카드, 나머지는 작은 아이콘
+  const firstSight = { id: `${k}:${c.menuPhotos.sights}` }, firstFood = { id: `${k}:${c.menuPhotos.foods}` };
+  const headlines = c.plan.map((d, i) => `<li><span>DAY ${i + 1}</span>${esc(d.headline || d.title)}</li>`).join("");
+  $("menu").innerHTML = `
+    <a class="m-feature" href="#/${k}/plan"><span class="m-img"${bg(`hero:${k}:1`)}></span>
+      <span class="m-text"><small>旅 · 여행코스</small><b>3박 4일 코스 보기 ›</b><ul>${headlines}</ul></span></a>
+    <div class="m-two">
+      <a class="m-photo" href="#/${k}/foods"><span class="m-img"${bg(firstFood && firstFood.id)}></span><span class="m-text"><small>食</small><b>먹거리</b></span></a>
+      <a class="m-photo" href="#/${k}/sights"><span class="m-img"${bg(firstSight && firstSight.id)}></span><span class="m-text"><small>景</small><b>관광지</b></span></a>
+    </div>
+    <div class="m-three">
+      <a href="#/${k}/map"><span class="ico">図</span><b>지도</b></a>
+      <a href="#/${k}/budget"><span class="ico">銭</span><b>예산</b></a>
+      <a href="#/${k}/pack"><span class="ico">荷</span><b>준비물</b></a>
+    </div>`;
 }
 
 let prevView = null;
@@ -211,7 +222,7 @@ function showView(view) {
   $("detail-title").textContent = `${c.name} ${m.name}`;
   $("detail-kanji").textContent = m.ico;
   $("detail-back").href = `#/${state.city}`;
-  document.title = `${c.name} ${m.name} · 매화 여행 플래너`;
+  document.title = `${c.name} ${m.name} · 우리의 첫 일본`;
   const viewEl = { plan: "view-plan", foods: "view-list", sights: "view-list", map: "view-map", budget: "view-budget", pack: "view-pack" }[m.id];
   document.querySelectorAll(".view").forEach(v => { v.hidden = v.id !== viewEl; });
   scrollTo(0, 0);

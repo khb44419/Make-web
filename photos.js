@@ -299,5 +299,25 @@ const PHOTOS = {
   "src": "images/p065.jpg",
   "page": "https://ja.wikipedia.org/wiki/%E4%B8%83%E9%87%8C%E3%81%AE%E6%B8%A1%E3%81%97",
   "title": "七里の渡し"
+ },
+ "icon:nintendo": {
+  "src": "images/p066.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:Super_Nintendo_World_Theme_Park_at_USJ_Osaka_Evening_Sky.jpg",
+  "title": "Super Nintendo World Theme Park at USJ Osaka Evening Sky.jpg"
+ },
+ "icon:nintendo2": {
+  "src": "images/p067.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:Super_Nintendo_World_in_Universal_Studios_Japan_(53851790346).jpg",
+  "title": "Super Nintendo World in Universal Studios Japan (53851790346).jpg"
+ },
+ "icon:ghibli": {
+  "src": "images/p068.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:Mei_and_Satsuki%27s_house_(39706397990).jpg",
+  "title": "Mei and Satsuki's house (39706397990).jpg"
+ },
+ "icon:ghibli2": {
+  "src": "images/p069.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:Expo_2005_of_Satsuki_and_Mei%E2%80%99s_House_03.jpg",
+  "title": "Expo 2005 of Satsuki and Mei’s House 03.jpg"
  }
 };

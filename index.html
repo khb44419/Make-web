@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>2027 일본여행 대시보드</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>🎌 2027년 2월 일본여행</h1>
+    <p id="dday"></p>
+  </header>
+
+  <nav class="city-buttons">
+    <button data-city="osaka">🐙 오사카</button>
+    <button data-city="nagoya">🏯 나고야</button>
+  </nav>
+
+  <main id="empty" class="hint">위에서 여행지를 골라보세요! ✈️</main>
+
+  <main id="dashboard" hidden>
+    <section class="intro">
+      <h2 id="city-title"></h2>
+      <p id="city-tagline"></p>
+      <ul class="facts">
+        <li>🌡️ <span id="weather"></span></li>
+        <li>🚆 <span id="transport"></span></li>
+      </ul>
+      <p class="events"><b>2월 이벤트</b></p>
+      <ul id="events"></ul>
+    </section>
+
+    <section class="map-wrap">
+      <div class="tabs">
+        <button data-tab="all" class="active">전체</button>
+        <button data-tab="sights">관광지</button>
+        <button data-tab="foods">먹거리</button>
+        <button data-tab="picks">⭐ 찜한 곳</button>
+      </div>
+      <div id="map"></div>
+    </section>
+
+    <section class="list">
+      <h3>목록 <small>(⭐ 눌러서 우리 일정에 담기)</small></h3>
+      <ul id="places"></ul>
+    </section>
+  </main>
+
+  <footer>좌표는 대략적인 위치예요. 방문 전에 영업시간 · 예약 여부를 꼭 확인하세요.</footer>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

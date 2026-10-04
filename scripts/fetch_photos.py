@@ -37,7 +37,45 @@ def commons_search(query, skip):
     return out
 
 
+def commons_file(name):
+    """file:파일이름 → Commons의 특정 사진 파일."""
+    url = ("https://commons.wikimedia.org/w/api.php?action=query&format=json&prop=imageinfo&iiprop=url|size|mime&iiurlwidth=960"
+           f"&titles={urllib.parse.quote('File:' + name)}")
+    try:
+        for p in get(url).get("query", {}).get("pages", {}).values():
+            ii = (p.get("imageinfo") or [{}])[0]
+            if ii.get("url"):
+                return {"orig": ii["url"], "width": ii["width"], "thumb": ii.get("thumburl", ii["url"]),
+                        "page": ii.get("descriptionurl", ""), "title": name}
+    except Exception as e:
+        print(f"  - file:{name}: 실패 ({e})")
+    return None
+
+
+def preview(queries):
+    """_preview 검색어마다 상위 사진을 작게 받아 preview/ 에 저장 (사람이 골라 file: 로 지정하도록)."""
+    from PIL import Image
+    import io
+    os.makedirs(os.path.join(ROOT, "preview"), exist_ok=True)
+    for f in os.listdir(os.path.join(ROOT, "preview")):
+        os.remove(os.path.join(ROOT, "preview", f))
+    index = {}
+    for qi, q in enumerate(queries):
+        for ri, info in enumerate(commons_search(q, set())[:8]):
+            try:
+                im = Image.open(io.BytesIO(get(info["thumb"], binary=True))).convert("RGB")
+                im.thumbnail((360, 360))
+                name = f"q{qi}-{ri}.jpg"
+                im.save(os.path.join(ROOT, "preview", name), "JPEG", quality=70)
+                index[name] = info["title"]
+            except Exception as e:
+                print(f"    · preview 실패: {e}")
+    json.dump(index, open(os.path.join(ROOT, "preview", "index.json"), "w", encoding="utf8"), ensure_ascii=False, indent=1)
+
+
 def summary(cand):
+    if cand.startswith("file:"):
+        return commons_file(cand[5:])
     lang, title = ("en", cand[3:]) if cand.startswith("en:") else ("ja", cand)
     url = f"https://{lang}.wikipedia.org/api/rest_v1/page/summary/{urllib.parse.quote(title.replace(' ', '_'), safe='')}"
     try:
@@ -110,6 +148,8 @@ def main():
     os.makedirs(os.path.join(ROOT, "images"), exist_ok=True)
     for f in os.listdir(os.path.join(ROOT, "images")):
         os.remove(os.path.join(ROOT, "images", f))
+    if src.get("_preview"):
+        preview(src["_preview"])
     used, out, n = {}, {}, 0
     for key, cands in src.items():
         if key.startswith("_"):

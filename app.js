@@ -36,6 +36,38 @@ function resolveStop(city, key) {
   return places(city).find(p => p.name === key);
 }
 
+// ===== 사진 (위키백과 대표 사진) =====
+// 위키백과 요약 API에서 대표 사진을 받아와 data-wiki 요소의 배경으로 넣는다. 결과는 브라우저에 저장해 재사용.
+const imgCache = store.get("img:v1", {});
+async function wikiImage(title) {
+  if (title in imgCache) return imgCache[title];
+  try {
+    const r = await fetch(`https://ja.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(title)}`);
+    if (!r.ok) { if (r.status === 404) { imgCache[title] = null; store.set("img:v1", imgCache); } return null; }
+    const j = await r.json();
+    const src = j.thumbnail && (j.originalimage && j.originalimage.width <= 800 ? j.originalimage.source : j.thumbnail.source.replace(/\/\d+px-/, "/640px-"));
+    const v = src ? { src, page: (j.content_urls && j.content_urls.mobile && j.content_urls.mobile.page) || `https://ja.wikipedia.org/wiki/${encodeURIComponent(title)}` } : null;
+    imgCache[title] = v; store.set("img:v1", imgCache);
+    return v;
+  } catch { return null; }
+}
+const photo = (title, fallback, cls = "") => title
+  ? `<div class="ph ${cls}" data-wiki="${esc(title)}"><span class="ph-kanji">${esc(fallback)}</span><a class="credit" target="_blank" rel="noopener">사진 · 위키백과</a></div>`
+  : `<div class="ph ${cls}"><span class="ph-kanji">${esc(fallback)}</span></div>`;
+function loadPhotos(root = document) {
+  root.querySelectorAll(".ph[data-wiki]:not(.tried)").forEach(async el => {
+    el.classList.add("tried");
+    const v = await wikiImage(el.dataset.wiki);
+    if (!v) return;
+    const img = new Image();
+    img.onload = () => {
+      el.style.backgroundImage = `url("${v.src}")`; el.classList.add("loaded");
+      const a = el.querySelector(".credit"); if (a) a.href = v.page;
+    };
+    img.src = v.src;
+  });
+}
+
 // ===== D-day 도장 =====
 const days = Math.ceil((new Date("2027-02-01T00:00:00") - new Date()) / 86400000);
 $("dday").innerHTML = days > 0 ? `<small>出発まで</small><b>D-${days}</b><small>2027 · 02</small>` : `<b>旅行中</b>`;
@@ -107,6 +139,15 @@ $("petal-toggle").addEventListener("click", () => petals.toggle());
 function budgetTotal(b) {
   return b.flight * 2 + b.hotel * 3 + b.food * 4 * 2 + (b.transport + b.act) * b.rate / 100 * 2 + b.shop;
 }
+function renderCityCovers() {
+  document.querySelectorAll(".city-card").forEach(card => {
+    const key = card.getAttribute("href").slice(2);
+    if (!card.querySelector(".ph")) card.insertAdjacentHTML("afterbegin", photo(CITIES[key].cover, CITIES[key].kanji, "cover"));
+  });
+  loadPhotos();
+}
+renderCityCovers();
+
 function renderCompare() {
   const keys = ["osaka", "nagoya"];
   const rows = [
@@ -223,7 +264,9 @@ function renderPlan() {
   $("plan-stops").innerHTML = stops.map((s, i) => `<li>
       <span class="num ${s.kind === "spot" ? "spot" : ""}">${i + 1}</span>
       <div><b>${esc(s.name)}</b>${s.desc ? `<p>${esc(s.desc)}</p>` : ""}<a href="${gmapsSearch(s.q)}" target="_blank" rel="noopener">구글 지도 ↗</a></div>
+      ${photo(s.wiki, s.kind === "spot" ? "駅" : s.kind === "foods" ? "食" : "景", "thumb")}
     </li>`).join("");
+  loadPhotos($("plan-stops"));
   $("plan-tips").innerHTML = `<li><b>Day ${state.day + 1} · ${esc(d.title)}</b></li>` + d.tips.map(t => `<li>${esc(t)}</li>`).join("");
 }
 
@@ -241,12 +284,16 @@ function renderList() {
   ul.innerHTML = list.map(p => {
     const on = state.picks.has(p.id);
     return `<li>
-      <div class="body"><b>${esc(p.name)}</b><p>${esc(p.desc)}</p>
-        <div class="links"><a href="${gmapsSearch(p.q)}" target="_blank" rel="noopener">구글 지도 ↗</a>
-          <button type="button" data-focus="${esc(p.id)}">지도에서 보기</button></div></div>
-      <button class="star ${on ? "on" : ""}" type="button" data-id="${esc(p.id)}" aria-label="${esc(p.name)} 찜하기" aria-pressed="${on}">${on ? "★" : "☆"}</button>
+      ${photo(p.wiki, p.kind === "foods" ? "食" : "景")}
+      <div class="row">
+        <div class="body"><b>${esc(p.name)}</b><p>${esc(p.desc)}</p>
+          <div class="links"><a href="${gmapsSearch(p.q)}" target="_blank" rel="noopener">구글 지도 ↗</a>
+            <button type="button" data-focus="${esc(p.id)}">지도에서 보기</button></div></div>
+        <button class="star ${on ? "on" : ""}" type="button" data-id="${esc(p.id)}" aria-label="${esc(p.name)} 찜하기" aria-pressed="${on}">${on ? "★" : "☆"}</button>
+      </div>
     </li>`;
   }).join("");
+  loadPhotos(ul);
   ul.querySelectorAll(".star").forEach(b => b.onclick = () => {
     const id = b.dataset.id;
     state.picks.has(id) ? state.picks.delete(id) : state.picks.add(id);

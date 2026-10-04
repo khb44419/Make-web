@@ -9,6 +9,20 @@ const CITIES = {
     weather: "2월 평균 3~10°C. 바닷바람이 차가우니 두꺼운 코트 필수!",
     transport: "간사이 공항 → 난카이 라피트로 난바까지 약 40분. 지하철 + 이코카(ICOCA) 카드 추천.",
     events: ["2월 초 세쓰분(節分) – 신사에서 콩 뿌리기", "우메(매화) 개화 시작 – 오사카성 매화원"],
+    costs: {
+      flight: { min: 200000, avg: 410000, note: "2월은 오사카 노선이 비싼 달이에요. 카약 기준 2월 평균 왕복 약 40만원, 제주항공 · 피치 · 이스타 등 LCC 특가는 20만원대도 나와요." },
+      hotel: { min: 90000, avg: 145000, note: "난바(나니와구) 평균 약 14.6만원/박. 비즈니스호텔 2인실은 9만원대부터. 수요일 숙박이 가장 저렴해요." },
+      transport: [
+        { name: "난카이 라피트 (공항 ↔ 난바, 편도)", yen: 1490, times: 2, note: "스마트폰 디지털 티켓은 1,300엔" },
+        { name: "지하철 1일권 (엔조이 에코카드)", yen: 820, times: 2, note: "주말 620엔. 2026년 3월까지 판매 공지가 있어 2027년 판매 여부 확인 필요" },
+        { name: "USJ 왕복 (JR 유니버설시티역)", yen: 400, times: 1, note: "대략적인 금액" }
+      ],
+      tickets: [
+        { name: "USJ 1데이 스튜디오 패스", yen: 8600, note: "날짜별 변동, 비수기 평일 약 8,200엔부터" },
+        { name: "우메다 스카이빌딩 공중정원", yen: 2000, note: "약 2,000엔" },
+        { name: "오사카성 천수각", yen: 1200, note: "약 1,200엔" }
+      ]
+    },
     plan: [
       { title: "1일차 · 도착 & 도톤보리", items: ["간사이공항 도착 → 난카이 라피트로 난바", "호텔 체크인", "도톤보리 산책 + 타코야키", "글리코 간판 앞 야경 인증샷"] },
       { title: "2일차 · 오사카성 & 야경", items: ["오사카성 + 매화원", "구로몬 시장에서 점심", "우메다 스카이빌딩 일몰·야경", "저녁은 오코노미야키"] },
@@ -41,6 +55,20 @@ const CITIES = {
     weather: "2월 평균 2~10°C. 오사카보다 살짝 더 춥고 건조해요.",
     transport: "주부 공항 → meitetsu μ-Sky로 나고야역까지 약 30분. 지하철 1일권이 가성비 좋아요.",
     events: ["2월 초 세쓰분 – 아츠타 신궁", "지브리 파크는 입장권 사전 예약 필수 (일정 확인!)"],
+    costs: {
+      flight: { min: 165000, avg: 300000, note: "트립닷컴 기준 특가 왕복 16만원대부터. 2월 평균은 오사카보다 낮은 편으로 추정돼요." },
+      hotel: { min: 100000, avg: 150000, note: "나고야역 주변 평균 약 €72(약 11만원)/박, 더블룸 평균은 약 $146(약 20만원)." },
+      transport: [
+        { name: "메이테츠 μ-SKY (공항 ↔ 나고야역, 편도)", yen: 1430, times: 2, note: "기본운임 980엔 + 지정석 450엔" },
+        { name: "지하철 1일권", yen: 870, times: 2, note: "토·일·공휴일과 매월 8일은 도니치 에코킷푸 620엔" },
+        { name: "지브리 파크 왕복 (지하철 + 리니모)", yen: 1400, times: 1, note: "대략적인 금액" }
+      ],
+      tickets: [
+        { name: "지브리 파크 오산포 데이패스 프리미엄", yen: 7300, note: "평일 7,300엔 / 주말 7,800엔. 스탠다드는 3,300엔" },
+        { name: "나고야성", yen: 500, note: "약 500엔" },
+        { name: "나고야항 수족관", yen: 2030, note: "약 2,030엔" }
+      ]
+    },
     plan: [
       { title: "1일차 · 도착 & 사카에", items: ["주부공항 도착 → μ-Sky로 나고야역", "호텔 체크인", "사카에 오아시스21 야경", "저녁은 미소카츠"] },
       { title: "2일차 · 나고야성 & 오스", items: ["코메다에서 오구라 토스트 모닝", "나고야성", "오스 상점가 길거리 간식", "저녁은 테바사키 + 맥주"] },
@@ -66,3 +94,16 @@ const CITIES = {
     ]
   }
 };
+
+// 출처 (2026년 10월 검색 기준, 실제 예약 시 다시 확인)
+const SOURCES = [
+  { name: "KAYAK 인천→간사이 항공권", url: "https://www.kayak.co.kr/%ED%95%AD%EA%B3%B5%EA%B6%8C/%EC%84%9C%EC%9A%B8-%EC%9D%B8%EC%B2%9C%EA%B5%AD%EC%A0%9C%EA%B3%B5%ED%95%AD-ICN/%EC%98%A4%EC%82%AC%EC%B9%B4-OSA" },
+  { name: "Trip.com 나고야 노선", url: "https://kr.trip.com/flights/airport-ngo-icn/" },
+  { name: "호텔스컴바인 나니와구 호텔", url: "https://www.hotelscombined.co.kr/Place/Naniwa.htm" },
+  { name: "KAYAK 나고야 호텔", url: "https://www.kayak.com/%E5%90%8D%E5%8F%A4%E5%B1%8B%E5%B8%82-%E3%83%9B%E3%83%86%E3%83%AB.2121.hotel.ksp" },
+  { name: "라피트 운임 (ekitan)", url: "https://ekitan.com/en/article/rapit-alpha-jikoku-ryoukin" },
+  { name: "μ-SKY 운임 (ekitan)", url: "https://ekitan.com/en/article/musky-jikoku-ryoukin" },
+  { name: "나고야 교통국 승차권", url: "https://www.kotsu.city.nagoya.jp/en/pc/TICKET/TRP0001071.htm" },
+  { name: "지브리 파크 티켓", url: "https://ghibli-park.jp/en/ticket/" },
+  { name: "USJ 티켓 가격 캘린더 안내", url: "https://happyell.co.jp/world/ticket2/" }
+];

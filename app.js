@@ -1,140 +1,153 @@
-const TRIP_DATE = new Date("2027-02-01T00:00:00");
-const days = Math.ceil((TRIP_DATE - new Date()) / 86400000);
-document.getElementById("dday").textContent =
-  days > 0 ? `출발까지 D-${days} (2027년 2월 중)` : "여행 중이거나 다녀왔어요!";
+const store = {
+  get(k, d) { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch { return d; } },
+  set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch {} }
+};
+const $ = id => document.getElementById(id);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const won = n => Math.round(n).toLocaleString("ko-KR") + "원";
+const yen = n => n.toLocaleString("ko-KR") + "엔";
 
-const state = { city: null, tab: "all", picks: load() };
-let map, layer;
+const days = Math.ceil((new Date("2027-02-01T00:00:00") - new Date()) / 86400000);
+$("dday").innerHTML = days > 0 ? `<small>出発まで</small><b>D-${days}</b><small>2027.02</small>` : `<b>旅行中</b>`;
 
-function load() {
-  try { return new Set(JSON.parse(localStorage.getItem("picks") || "[]")); }
-  catch { return new Set(); }
+const state = { city: store.get("city", "osaka"), tab: "all", sel: null, picks: new Set(store.get("picks", [])) };
+
+function places() {
+  const c = CITIES[state.city];
+  return [...c.sights.map(p => ({ ...p, kind: "sights" })), ...c.foods.map(p => ({ ...p, kind: "foods" }))]
+    .map((p, i) => ({ ...p, n: i + 1, id: `${state.city}:${p.name}` }));
 }
-function save() {
-  try { localStorage.setItem("picks", JSON.stringify([...state.picks])); } catch {}
-}
-
-function placesOf(city) {
-  const c = CITIES[city];
-  return [
-    ...c.sights.map(p => ({ ...p, kind: "sights", icon: "🏛️" })),
-    ...c.foods.map(p => ({ ...p, kind: "foods", icon: "🍜" }))
-  ].map(p => ({ ...p, id: `${city}:${p.name}` }));
+function visible() {
+  const all = places();
+  if (state.tab === "picks") return all.filter(p => state.picks.has(p.id));
+  return state.tab === "all" ? all : all.filter(p => p.kind === state.tab);
 }
 
 function selectCity(city) {
-  state.city = city; state.tab = "all";
+  state.city = city; state.sel = null; store.set("city", city);
   const c = CITIES[city];
-  document.getElementById("empty").hidden = true;
-  document.getElementById("dashboard").hidden = false;
-  document.getElementById("city-title").textContent = `${c.emoji} ${c.name}`;
-  document.getElementById("city-tagline").textContent = c.tagline;
-  document.getElementById("weather").textContent = c.weather;
-  document.getElementById("transport").textContent = c.transport;
-  document.getElementById("plan").innerHTML = c.plan.map(d =>
-    `<div><h4>${d.title}</h4><ul>${d.items.map(i => `<li>${i}</li>`).join("")}</ul></div>`).join("");
-  document.getElementById("events").innerHTML = c.events.map(e => `<li>${e}</li>`).join("");
-  document.querySelectorAll(".city-buttons button").forEach(b => b.classList.toggle("active", b.dataset.city === city));
-  document.querySelectorAll(".tabs button").forEach(b => b.classList.toggle("active", b.dataset.tab === "all"));
-
-  if (!map) {
-    map = L.map("map");
-    L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
-      maxZoom: 19, attribution: "© OpenStreetMap"
-    }).addTo(map);
-    layer = L.layerGroup().addTo(map);
-  }
-  map.setView(c.center, c.zoom);
-  setTimeout(() => map.invalidateSize(), 0);
+  document.querySelectorAll("#pick button").forEach(b => b.setAttribute("aria-pressed", b.dataset.city === city));
+  $("city-title").textContent = c.name;
+  $("city-tagline").textContent = c.tagline;
+  $("weather").textContent = c.weather;
+  $("transport").textContent = c.transport;
+  $("events").textContent = c.events.join(" / ");
+  $("plan").innerHTML = c.plan.map((d, i) => {
+    const t = d.title.split(" · ")[1] || d.title;
+    return `<div class="day"><h4><span class="n">${["一", "二", "三", "四"][i]}日目 · DAY ${i + 1}</span>${esc(t)}</h4><ul>${d.items.map(x => `<li>${esc(x)}</li>`).join("")}</ul></div>`;
+  }).join("");
+  renderCosts(c.costs);
+  loadBudget();
   render();
 }
 
-function visible() {
-  const all = placesOf(state.city);
-  if (state.tab === "picks") return all.filter(p => state.picks.has(p.id));
-  if (state.tab === "all") return all;
-  return all.filter(p => p.kind === state.tab);
+function drawMap(list) {
+  const W = 600, H = 440, P = 40, all = places();
+  const lats = all.map(p => p.pos[0]), lngs = all.map(p => p.pos[1]);
+  const la0 = Math.min(...lats), la1 = Math.max(...lats), lo0 = Math.min(...lngs), lo1 = Math.max(...lngs);
+  const kx = Math.cos(((la0 + la1) / 2) * Math.PI / 180);
+  const s = Math.min((W - 2 * P) / ((lo1 - lo0) * kx || 1), (H - 2 * P) / ((la1 - la0) || 1));
+  const ox = (W - (lo1 - lo0) * kx * s) / 2, oy = (H - (la1 - la0) * s) / 2;
+  const xy = p => [ox + (p.pos[1] - lo0) * kx * s, H - oy - (p.pos[0] - la0) * s];
+  const km = 5, px = km / 111 * s; // 위도 1도 ≈ 111km
+  let html = `<line x1="20" y1="${H - 20}" x2="${(20 + px).toFixed(1)}" y2="${H - 20}" stroke="var(--muted)" stroke-width="2"/>
+    <text x="20" y="${H - 26}">${km} km</text><text x="${W - 20}" y="24" text-anchor="end">北 ↑</text>`;
+  list.forEach(p => {
+    const [x, y] = xy(p);
+    html += `<circle class="dot ${p.kind} ${state.sel === p.id ? "on" : ""}" data-id="${esc(p.id)}" cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="9"><title>${esc(p.name)}</title></circle>
+      <text class="num" x="${x.toFixed(1)}" y="${(y + 3.5).toFixed(1)}" text-anchor="middle">${p.n}</text>`;
+  });
+  const svg = $("map");
+  svg.innerHTML = html;
+  svg.querySelectorAll(".dot").forEach(d => d.addEventListener("click", () => {
+    state.sel = d.dataset.id; render();
+    document.querySelector(`#places li[data-id="${CSS.escape(state.sel)}"]`)?.scrollIntoView({ block: "nearest", behavior: "smooth" });
+  }));
 }
 
 function render() {
   const list = visible();
-  layer.clearLayers();
-  const markers = {};
-  list.forEach(p => {
-    markers[p.id] = L.marker(p.pos).addTo(layer)
-      .bindPopup(`<b>${p.icon} ${p.name}</b><br>${p.desc}`);
-  });
-
-  const ul = document.getElementById("places");
-  ul.innerHTML = "";
-  if (!list.length) ul.innerHTML = `<li>아직 찜한 곳이 없어요. ⭐을 눌러보세요!</li>`;
-  list.forEach(p => {
-    const li = document.createElement("li");
+  drawMap(list);
+  const ul = $("places");
+  if (!list.length) { ul.innerHTML = `<li class="empty">아직 찜한 곳이 없어요. ☆를 눌러 담아보세요.</li>`; return; }
+  ul.innerHTML = list.map(p => {
+    const q = encodeURIComponent(`${p.pos[0]},${p.pos[1]}`);
     const on = state.picks.has(p.id);
-    li.innerHTML = `<div><b>${p.icon} ${p.name}</b><p class="desc">${p.desc}</p></div>
-      <button class="star ${on ? "on" : ""}" aria-label="찜하기">⭐</button>`;
-    li.addEventListener("click", () => {
-      map.setView(p.pos, 15);
-      markers[p.id].openPopup();
-      document.getElementById("map").scrollIntoView({ behavior: "smooth", block: "center" });
-    });
+    return `<li data-id="${esc(p.id)}" class="${state.sel === p.id ? "on" : ""}">
+      <span class="tag ${p.kind}">${p.n} ${p.kind === "sights" ? "관광" : "먹거리"}</span>
+      <div class="body"><b>${esc(p.name)}</b><p>${esc(p.desc)}</p>
+        <a href="https://www.google.com/maps/search/?api=1&query=${q}" target="_blank" rel="noopener">구글 지도에서 보기 ↗</a></div>
+      <button class="star ${on ? "on" : ""}" aria-label="찜하기" aria-pressed="${on}">${on ? "★" : "☆"}</button></li>`;
+  }).join("");
+  ul.querySelectorAll("li[data-id]").forEach(li => {
+    li.addEventListener("click", e => { if (e.target.closest("a")) return; state.sel = li.dataset.id; render(); });
     li.querySelector(".star").addEventListener("click", e => {
       e.stopPropagation();
-      state.picks.has(p.id) ? state.picks.delete(p.id) : state.picks.add(p.id);
-      save(); render();
+      const id = li.dataset.id;
+      state.picks.has(id) ? state.picks.delete(id) : state.picks.add(id);
+      store.set("picks", [...state.picks]); render();
     });
-    ul.appendChild(li);
   });
 }
 
-document.querySelectorAll(".city-buttons button").forEach(b =>
-  b.addEventListener("click", () => selectCity(b.dataset.city)));
-document.querySelectorAll(".tabs button").forEach(b =>
-  b.addEventListener("click", () => {
-    state.tab = b.dataset.tab;
-    document.querySelectorAll(".tabs button").forEach(x => x.classList.toggle("active", x === b));
-    render();
-  }));
+// ---- 비용 시세 ----
+function renderCosts(c) {
+  $("c-flight").textContent = `${won(c.flight.min)} ~ 평균 ${won(c.flight.avg)}`;
+  $("c-flight-note").textContent = c.flight.note;
+  $("c-hotel").textContent = `${won(c.hotel.min)} ~ 평균 ${won(c.hotel.avg)}`;
+  $("c-hotel-note").textContent = c.hotel.note;
+  const row = (r, times) => `<tr><td>${esc(r.name)}</td><td class="num">${yen(r.yen)}</td><td class="num">${times}</td><td class="memo">${esc(r.note)}</td></tr>`;
+  $("c-rows").innerHTML =
+    `<tr class="group"><td colspan="4">교통</td></tr>` + c.transport.map(r => row(r, r.times + "회")).join("") +
+    `<tr class="group"><td colspan="4">입장료</td></tr>` + c.tickets.map(r => row(r, "1회")).join("");
+}
+$("sources").innerHTML = SOURCES.map(s => `<li><a href="${esc(s.url)}" target="_blank" rel="noopener">${esc(s.name)}</a></li>`).join("");
 
-// ---- 예산 계산기 ----
-const BUDGET_DEFAULTS = { flight: 300000, hotel: 100000, food: 60000, transport: 15000, act: 100000, shop: 300000 };
-const budget = (() => {
-  try { return { ...BUDGET_DEFAULTS, ...JSON.parse(localStorage.getItem("budget") || "{}") }; }
-  catch { return { ...BUDGET_DEFAULTS }; }
-})();
+// ---- 예산 계산기 (도시별 저장) ----
+const FIELDS = ["flight", "hotel", "food", "transport", "act", "shop", "rate"];
+let budget = {};
+function defaults(city) {
+  const c = CITIES[city].costs;
+  return {
+    flight: c.flight.avg, hotel: c.hotel.avg, food: 60000,
+    transport: c.transport.reduce((s, r) => s + r.yen * r.times, 0),
+    act: c.tickets.reduce((s, r) => s + r.yen, 0),
+    shop: 300000, rate: 930
+  };
+}
+function loadBudget() {
+  budget = { ...defaults(state.city), ...store.get("budget:" + state.city, {}) };
+  FIELDS.forEach(k => { $("b-" + k).value = budget[k]; });
+  renderBudget();
+}
 function renderBudget() {
   const b = budget;
-  const total = b.flight * 2 + b.hotel * 3 + (b.food + b.transport) * 4 * 2 + b.act * 2 + b.shop;
-  document.getElementById("b-total").textContent = total.toLocaleString();
-  document.getElementById("b-each").textContent = Math.round(total / 2).toLocaleString();
+  const yenToWon = y => y * b.rate / 100;
+  const total = b.flight * 2 + b.hotel * 3 + b.food * 4 * 2 + yenToWon(b.transport + b.act) * 2 + b.shop;
+  $("b-total").textContent = won(total);
+  $("b-each").textContent = won(total / 2);
 }
-Object.keys(BUDGET_DEFAULTS).forEach(k => {
-  const el = document.getElementById("b-" + k);
-  el.value = budget[k];
-  el.addEventListener("input", () => {
-    budget[k] = Number(el.value) || 0;
-    try { localStorage.setItem("budget", JSON.stringify(budget)); } catch {}
-    renderBudget();
-  });
-});
-renderBudget();
+FIELDS.forEach(k => $("b-" + k).addEventListener("input", e => {
+  budget[k] = Number(e.target.value) || 0;
+  store.set("budget:" + state.city, budget); renderBudget();
+}));
+$("b-reset").addEventListener("click", () => { store.set("budget:" + state.city, {}); loadBudget(); });
 
 // ---- 준비물 체크리스트 ----
 const CHECK_ITEMS = ["여권 (유효기간 6개월 이상)", "Visit Japan Web 등록", "환전 / 트래블카드", "eSIM 또는 로밍", "항공권 · 숙소 예약 확인",
-  "여행자 보험", "두꺼운 코트 · 목도리 · 장갑", "핫팩", "립밤 · 보습제 (건조해요)", "접이식 우산", "충전기 · 보조배터리",
-  "전압 확인 (일본 100V)", "이코카(ICOCA) 카드", "테마파크·지브리 파크 티켓 예약"];
-let checked;
-try { checked = new Set(JSON.parse(localStorage.getItem("checked") || "[]")); } catch { checked = new Set(); }
-const ul = document.getElementById("checklist");
-CHECK_ITEMS.forEach(t => {
-  const li = document.createElement("li");
-  li.innerHTML = `<label><input type="checkbox"> <span></span></label>`;
-  li.querySelector("span").textContent = t;
-  const cb = li.querySelector("input");
-  cb.checked = checked.has(t);
-  cb.addEventListener("change", () => {
-    cb.checked ? checked.add(t) : checked.delete(t);
-    try { localStorage.setItem("checked", JSON.stringify([...checked])); } catch {}
-  });
-  ul.appendChild(li);
-});
+  "여행자 보험", "두꺼운 코트 · 목도리 · 장갑", "핫팩", "립밤 · 보습제", "접이식 우산", "충전기 · 보조배터리",
+  "전압 확인 (일본 100V)", "교통카드 (ICOCA 등)", "USJ · 지브리 파크 티켓 예약"];
+const checked = new Set(store.get("checked", []));
+$("checklist").innerHTML = CHECK_ITEMS.map((t, i) =>
+  `<li><label><input type="checkbox" id="chk-${i}" ${checked.has(t) ? "checked" : ""}><span>${esc(t)}</span></label></li>`).join("");
+CHECK_ITEMS.forEach((t, i) => $("chk-" + i).addEventListener("change", e => {
+  e.target.checked ? checked.add(t) : checked.delete(t); store.set("checked", [...checked]);
+}));
+
+document.querySelectorAll("#pick button").forEach(b => b.addEventListener("click", () => selectCity(b.dataset.city)));
+document.querySelectorAll("#tabs button").forEach(b => b.addEventListener("click", () => {
+  state.tab = b.dataset.tab;
+  document.querySelectorAll("#tabs button").forEach(x => x.setAttribute("aria-pressed", x === b));
+  render();
+}));
+selectCity(CITIES[state.city] ? state.city : "osaka");

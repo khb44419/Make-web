@@ -1,81 +1,108 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>2027 일본여행 대시보드</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>2027 일본여행 플래너</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Gowun+Dodum&display=swap">
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <header>
-    <h1>🎌 2027년 2월 일본여행</h1>
-    <p id="dday"></p>
+<div class="wrap">
+  <header class="hero">
+    <div class="hero-text">
+      <p class="eyebrow">二〇二七年 二月 · 3박 4일 · 둘이서</p>
+      <h1>일본여행 플래너</h1>
+    </div>
+    <div class="seal" id="dday" aria-live="polite"></div>
   </header>
 
-  <nav class="city-buttons">
-    <button data-city="osaka">🐙 오사카</button>
-    <button data-city="nagoya">🏯 나고야</button>
+  <nav class="noren" id="pick" aria-label="여행지 선택">
+    <button id="pick-osaka" data-city="osaka" aria-pressed="false"><span class="kanji">大阪</span><b>오사카</b><small>먹방 · 야경 · USJ</small></button>
+    <button id="pick-nagoya" data-city="nagoya" aria-pressed="false"><span class="kanji">名古屋</span><b>나고야</b><small>미소카츠 · 성 · 지브리 파크</small></button>
   </nav>
 
-  <main id="empty" class="hint">위에서 여행지를 골라보세요! ✈️</main>
+  <section class="panel intro">
+    <div class="head"><span class="stamp">概要</span><h2 id="city-title"></h2></div>
+    <p id="city-tagline" class="lead"></p>
+    <dl class="facts">
+      <div><dt>2월 날씨</dt><dd id="weather"></dd></div>
+      <div><dt>공항 → 시내</dt><dd id="transport"></dd></div>
+      <div><dt>2월 이벤트</dt><dd id="events"></dd></div>
+    </dl>
+  </section>
 
-  <main id="dashboard" hidden>
-    <section class="intro">
-      <h2 id="city-title"></h2>
-      <p id="city-tagline"></p>
-      <ul class="facts">
-        <li>🌡️ <span id="weather"></span></li>
-        <li>🚆 <span id="transport"></span></li>
-      </ul>
-      <p class="events"><b>2월 이벤트</b></p>
-      <ul id="events"></ul>
+  <section class="panel">
+    <div class="head"><span class="stamp">旅程</span><h3>3박 4일 추천 일정</h3></div>
+    <div class="plan" id="plan"></div>
+  </section>
+
+  <div class="two">
+    <section class="panel">
+      <div class="head"><span class="stamp">地図</span><h3>위치 지도</h3></div>
+      <div class="legend"><span><i class="sw sights"></i>관광지</span><span><i class="sw foods"></i>먹거리</span></div>
+      <svg class="map" id="map" viewBox="0 0 600 440" role="img" aria-label="장소 위치 지도"></svg>
+      <small class="muted">점을 누르면 목록에서 해당 장소가 표시돼요. 길찾기는 각 장소의 구글 지도 링크를 이용하세요.</small>
     </section>
-
-    <section>
-      <h3>📅 3박 4일 추천 일정</h3>
-      <div id="plan" class="plan"></div>
-    </section>
-
-    <section class="map-wrap">
-      <div class="tabs">
-        <button data-tab="all" class="active">전체</button>
-        <button data-tab="sights">관광지</button>
-        <button data-tab="foods">먹거리</button>
-        <button data-tab="picks">⭐ 찜한 곳</button>
+    <section class="panel">
+      <div class="head spread">
+        <div class="head"><span class="stamp">名所</span><h3>장소 목록</h3></div>
+        <div class="tabs" id="tabs">
+          <button id="tab-all" data-tab="all" aria-pressed="true">전체</button>
+          <button id="tab-sights" data-tab="sights" aria-pressed="false">관광지</button>
+          <button id="tab-foods" data-tab="foods" aria-pressed="false">먹거리</button>
+          <button id="tab-picks" data-tab="picks" aria-pressed="false">★ 찜</button>
+        </div>
       </div>
-      <div id="map"></div>
+      <ul class="places" id="places"></ul>
     </section>
+  </div>
 
-    <section class="list">
-      <h3>목록 <small>(⭐ 눌러서 우리 일정에 담기)</small></h3>
-      <ul id="places"></ul>
-    </section>
-  </main>
+  <section class="panel">
+    <div class="head"><span class="stamp">費用</span><h3>항공 · 숙소 · 교통 · 입장료 시세</h3></div>
+    <p class="muted small">2026년 10월에 검색한 시세예요. 2027년 2월 실제 가격은 예약 시점에 따라 달라요.</p>
+    <div class="cost-grid">
+      <div class="cost-card"><span class="k">항공권 (1인 왕복)</span><b id="c-flight"></b><p id="c-flight-note"></p></div>
+      <div class="cost-card"><span class="k">숙소 (1박, 2인 1실)</span><b id="c-hotel"></b><p id="c-hotel-note"></p></div>
+    </div>
+    <div class="table-wrap">
+      <table class="yen">
+        <thead><tr><th>교통 · 입장료 (1인)</th><th class="num">단가</th><th class="num">횟수</th><th>메모</th></tr></thead>
+        <tbody id="c-rows"></tbody>
+      </table>
+    </div>
+    <details class="sources"><summary>출처 보기</summary><ul id="sources"></ul></details>
+  </section>
 
-  <main id="tools">
-    <section>
-      <h3>💰 예산 계산기 <small>(2명, 3박 4일 · 숫자는 마음대로 고쳐보세요)</small></h3>
+  <div class="two">
+    <section class="panel">
+      <div class="head"><span class="stamp">予算</span><h3>예산 계산기</h3></div>
+      <p class="muted small">위 시세의 평균값으로 채워져 있어요. 도시별로 따로 저장되니 마음대로 고쳐보세요.</p>
       <div class="budget">
-        <label>항공권 (1인) <input type="number" id="b-flight" step="10000"></label>
-        <label>숙소 (1박, 방 1개) <input type="number" id="b-hotel" step="10000"></label>
-        <label>식비 (1인/일) <input type="number" id="b-food" step="5000"></label>
-        <label>교통 (1인/일) <input type="number" id="b-transport" step="1000"></label>
-        <label>입장료·액티비티 (1인) <input type="number" id="b-act" step="10000"></label>
-        <label>쇼핑 (총) <input type="number" id="b-shop" step="10000"></label>
+        <label>항공권 (1인 왕복, 원)<input type="number" id="b-flight" step="10000"></label>
+        <label>숙소 (1박, 원)<input type="number" id="b-hotel" step="10000"></label>
+        <label>식비 (1인/일, 원)<input type="number" id="b-food" step="5000"></label>
+        <label>교통 (1인 합계, 엔)<input type="number" id="b-transport" step="100"></label>
+        <label>입장료 (1인 합계, 엔)<input type="number" id="b-act" step="100"></label>
+        <label>쇼핑 (총, 원)<input type="number" id="b-shop" step="10000"></label>
+        <label>환율 (100엔당 원)<input type="number" id="b-rate" step="10"></label>
       </div>
-      <p class="total">총 <b id="b-total">0</b>원 · 1인 <b id="b-each">0</b>원</p>
+      <div class="total">
+        <div><span class="k">둘이서 총액</span><b id="b-total">0</b></div>
+        <div><span class="k">1인당</span><span id="b-each">0</span></div>
+      </div>
+      <button class="reset" id="b-reset" type="button">시세 평균값으로 되돌리기</button>
     </section>
-    <section>
-      <h3>🎒 준비물 체크리스트</h3>
-      <ul id="checklist" class="check"></ul>
+    <section class="panel">
+      <div class="head"><span class="stamp">支度</span><h3>준비물 체크리스트</h3></div>
+      <ul class="check" id="checklist"></ul>
     </section>
-  </main>
+  </div>
 
-  <footer>좌표는 대략적인 위치예요. 방문 전에 영업시간 · 예약 여부를 꼭 확인하세요.</footer>
-
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
-  <script src="data.js"></script>
-  <script src="app.js"></script>
+  <footer>좌표와 가격은 대략적인 값이에요. 방문 전에 영업시간 · 예약 · 요금을 꼭 확인하세요. 찜 · 예산 · 체크 상태는 이 브라우저에만 저장돼요.</footer>
+</div>
+<script src="data.js"></script>
+<script src="app.js"></script>
 </body>
 </html>

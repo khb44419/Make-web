@@ -162,7 +162,7 @@ function renderCompare() {
   const keys = Object.keys(CITIES);
   const rows = [
     ["예상 예산 (둘이)", k => won(budgetTotal(getBudget(k)))],
-    ["비행시간 (대구 출발)", k => CITIES[k].compare.flightTime],
+    ["비행시간", k => CITIES[k].compare.flightTime],
     ["공항 → 시내", k => CITIES[k].compare.airport],
     ["분위기", k => CITIES[k].compare.mood],
     ["하이라이트", k => CITIES[k].compare.highlight],

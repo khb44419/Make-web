@@ -14,7 +14,7 @@
 <meta name="apple-mobile-web-app-title" content="매화여행">
 <script>
   // 새 버전 확인: GitHub Pages가 예전 화면을 보여주면 한 번 새로고침해서 최신 버전으로 바꾼다.
-  const APP_VERSION = "12";
+  const APP_VERSION = "13";
   fetch("version.txt?t=" + Date.now(), { cache: "no-store" }).then(r => r.ok ? r.text() : APP_VERSION).then(v => {
     let tried = null; try { tried = sessionStorage.getItem("reloadedFor"); } catch {}
     if (v.trim() !== APP_VERSION && tried !== v.trim()) {
@@ -26,7 +26,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Gowun+Dodum&display=swap">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
-<link rel="stylesheet" href="style.css?v=12">
+<link rel="stylesheet" href="style.css?v=13">
 </head>
 <body>
 <canvas id="petals" aria-hidden="true"></canvas>
@@ -186,7 +186,7 @@
 <div class="toast" id="toast" role="status" hidden></div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
-<script src="data.js?v=12"></script>
-<script src="app.js?v=12"></script>
+<script src="data.js?v=13"></script>
+<script src="app.js?v=13"></script>
 </body>
 </html>

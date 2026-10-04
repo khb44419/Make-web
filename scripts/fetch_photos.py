@@ -38,7 +38,18 @@ def summary(cand):
             "page": j.get("content_urls", {}).get("mobile", {}).get("page", ""), "title": j.get("title", title)}
 
 
-def download(info, dest_base):
+def ahash(im):
+    small = im.convert("L").resize((8, 8))
+    px = list(small.getdata())
+    avg = sum(px) / len(px)
+    return sum(1 << i for i, v in enumerate(px) if v > avg)
+
+
+def similar(h, hashes):
+    return any(bin(h ^ o).count("1") <= 8 for o in hashes)
+
+
+def download(info, dest_base, hashes):
     # 위키미디어 표준 썸네일 크기(960 → 500 → 기본 썸네일 → 원본) 순서로 시도
     urls = []
     if "/thumb/" in info["thumb"]:
@@ -59,6 +70,11 @@ def download(info, dest_base):
             from PIL import Image
             import io
             im = Image.open(io.BytesIO(data)).convert("RGB")
+            h = ahash(im)
+            if similar(h, hashes):
+                print("    · 이미 쓴 사진과 거의 같아서 건너뜀")
+                return None
+            hashes.append(h)
             if im.width > 900:
                 im = im.resize((900, round(im.height * 900 / im.width)), Image.LANCZOS)
             im.save(os.path.join(ROOT, path), "JPEG", quality=80, optimize=True, progressive=True)
@@ -81,6 +97,7 @@ def main():
         # 도시별로 겹침을 막는다 (표지 사진도 그 도시 그룹에 포함)
         group = key.replace("spot:", "").replace("cover:", "").split(":")[0]
         seen = used.setdefault(group, set())
+        hashes = used.setdefault(group + ":hash", [])
         print(key)
         for cand in cands:
             info = summary(cand)
@@ -91,7 +108,7 @@ def main():
                 print(f"  - {cand}: 이미 쓴 사진이라 건너뜀")
                 continue
             n += 1
-            path = download(info, f"images/p{n:03d}")
+            path = download(info, f"images/p{n:03d}", hashes)
             if not path:
                 continue
             seen.add(file_id)

@@ -128,9 +128,8 @@
     "スタジオジブリ"
   ],
   "nagoya:시라카와고": [
-    "search:Shirakawa-go snow winter village",
-    "search:白川郷 雪",
-    "白川郷"
+    "file:Shirakawa-go winter (51815452116).jpg",
+    "search:Shirakawa-go snow winter village"
   ],
   "nagoya:다카야마 옛 거리": [
     "高山陣屋",
@@ -270,19 +269,12 @@
     "愛知高速交通東部丘陵線"
   ],
   "hero:nagoya:3": [
-    "search:Shirakawa-go gassho-zukuri snow",
-    "search:Ogimachi snow winter",
-    "合掌造り"
+    "file:Shirakawago village and snowy mountain (13087582315).jpg",
+    "file:Winter in Shirakawa-go (51815451686).jpg"
   ],
   "hero:nagoya:4": [
     "宮の渡し",
     "en:Miya-no-watashi",
     "熱田区"
-  ],
-  "_preview": [
-    "Shirakawa-go winter snow gassho",
-    "Shirakawago snow village",
-    "白川郷 冬",
-    "Ogimachi winter"
   ]
 }

@@ -15,11 +15,6 @@ const PHOTOS = {
   "page": "https://ja.wikipedia.org/wiki/%E5%A4%A7%E5%9D%82%E5%9F%8E",
   "title": "大坂城"
  },
- "osaka:도톤보리": {
-  "src": "images/p004.jpg",
-  "page": "https://en.wikipedia.org/wiki/D%C5%8Dtonbori",
-  "title": "Dōtonbori"
- },
  "osaka:유니버설 스튜디오 재팬": {
   "src": "images/p005.jpg",
   "page": "https://ja.wikipedia.org/wiki/%E3%83%A6%E3%83%8B%E3%83%90%E3%83%BC%E3%82%B5%E3%83%AB%E3%83%BB%E3%82%B9%E3%82%BF%E3%82%B8%E3%82%AA%E3%83%BB%E3%82%B8%E3%83%A3%E3%83%91%E3%83%B3",
@@ -182,8 +177,8 @@ const PHOTOS = {
  },
  "nagoya:테바사키 세카이노 야만짱": {
   "src": "images/p037.jpg",
-  "page": "https://ja.wikipedia.org/wiki/%E5%90%8D%E5%8F%A4%E5%B1%8B%E3%82%81%E3%81%97",
-  "title": "名古屋めし"
+  "page": "https://ja.wikipedia.org/wiki/%E6%89%8B%E7%BE%BD%E5%85%88%E5%94%90%E6%8F%9A%E3%81%92",
+  "title": "手羽先唐揚げ"
  },
  "nagoya:시라카와고 푸딩의 집": {
   "src": "images/p038.jpg",
@@ -246,17 +241,17 @@ const PHOTOS = {
   "title": "あつた蓬莱軒"
  },
  "nagoya:시라토리 정원 찻집": {
-  "src": "images/p050.jpg",
-  "page": "https://ja.wikipedia.org/wiki/%E6%8A%B9%E8%8C%B6",
-  "title": "抹茶"
+  "src": "images/p052.jpg",
+  "page": "https://ja.wikipedia.org/wiki/%E5%92%8C%E8%8F%93%E5%AD%90",
+  "title": "和菓子"
  },
  "spot:nagoya:airport": {
-  "src": "images/p051.jpg",
+  "src": "images/p053.jpg",
   "page": "https://ja.wikipedia.org/wiki/%E4%B8%AD%E9%83%A8%E5%9B%BD%E9%9A%9B%E7%A9%BA%E6%B8%AF",
   "title": "中部国際空港"
  },
  "spot:nagoya:base": {
-  "src": "images/p052.jpg",
+  "src": "images/p054.jpg",
   "page": "https://ja.wikipedia.org/wiki/%E5%90%8D%E5%8F%A4%E5%B1%8B%E9%A7%85",
   "title": "名古屋駅"
  }

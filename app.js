@@ -183,7 +183,7 @@ function route() {
   $("screen-city").hidden = !valid || !!view;
   $("screen-detail").hidden = !valid || !view;
   petals.sync(!valid);
-  if (!valid) { renderCompare(); document.title = "우리의 첫 일본"; return scrollTo(0, 0); }
+  if (!valid) { renderCompare(); document.title = "설레는 일본여행"; return scrollTo(0, 0); }
   state.city = city;
   if (!view) { renderCity(); return scrollTo(0, 0); }
   showView(view);
@@ -192,7 +192,7 @@ addEventListener("hashchange", route);
 
 function renderCity() {
   const c = CITIES[state.city], k = state.city;
-  document.title = `${c.name} · 우리의 첫 일본`;
+  document.title = `${c.name} · 설레는 일본여행`;
   $("city-name").textContent = c.name;
   $("city-kanji").textContent = c.kanji;
   $("city-hero").innerHTML = `<div class="hero-img"${bg(`cover:${k}`)}></div>
@@ -222,7 +222,7 @@ function showView(view) {
   $("detail-title").textContent = `${c.name} ${m.name}`;
   $("detail-kanji").textContent = m.ico;
   $("detail-back").href = `#/${state.city}`;
-  document.title = `${c.name} ${m.name} · 우리의 첫 일본`;
+  document.title = `${c.name} ${m.name} · 설레는 일본여행`;
   const viewEl = { plan: "view-plan", foods: "view-list", sights: "view-list", map: "view-map", budget: "view-budget", pack: "view-pack" }[m.id];
   document.querySelectorAll(".view").forEach(v => { v.hidden = v.id !== viewEl; });
   scrollTo(0, 0);

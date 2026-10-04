@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>우리의 첫 일본</title>
+<title>설레는 일본여행</title>
 <meta name="description" content="2027년 2월, 둘이 함께 떠나는 첫 해외여행이자 첫 일본여행 3박 4일">
 <meta name="theme-color" content="#b8325a">
 <link rel="manifest" href="manifest.json?v=3">
@@ -11,10 +11,10 @@
 <link rel="apple-touch-icon" href="icon-180.png?v=3">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="우리 첫 일본">
+<meta name="apple-mobile-web-app-title" content="설레는 일본">
 <script>
   // 새 버전 확인: GitHub Pages가 예전 화면을 보여주면 한 번 새로고침해서 최신 버전으로 바꾼다.
-  const APP_VERSION = "21";
+  const APP_VERSION = "22";
   fetch("version.txt?t=" + Date.now(), { cache: "no-store" }).then(r => r.ok ? r.text() : APP_VERSION).then(v => {
     let tried = null; try { tried = sessionStorage.getItem("reloadedFor"); } catch {}
     if (v.trim() !== APP_VERSION && tried !== v.trim()) {
@@ -26,7 +26,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Gowun+Dodum&display=swap">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
-<link rel="stylesheet" href="style.css?v=21">
+<link rel="stylesheet" href="style.css?v=22">
 </head>
 <body>
 <canvas id="petals" aria-hidden="true"></canvas>
@@ -45,8 +45,7 @@
   <header class="home-head">
     <svg class="branch" viewBox="0 0 320 120" aria-hidden="true" id="branch"></svg>
     <p class="eyebrow">二〇二七年 二月 · 3박 4일 · 둘이서</p>
-    <h1>우리의 첫 일본</h1>
-    <p class="sub">둘이 함께 떠나는 첫 해외여행</p>
+    <h1>설레는 일본여행</h1>
     <div class="seal" id="dday"></div>
   </header>
 
@@ -188,8 +187,8 @@
 <div class="toast" id="toast" role="status" hidden></div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
-<script src="data.js?v=21"></script>
-<script src="photos.js?v=21"></script>
-<script src="app.js?v=21"></script>
+<script src="data.js?v=22"></script>
+<script src="photos.js?v=22"></script>
+<script src="app.js?v=22"></script>
 </body>
 </html>

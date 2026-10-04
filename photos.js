@@ -7,8 +7,8 @@ const PHOTOS = {
  },
  "cover:nagoya": {
   "src": "images/p002.jpg",
-  "page": "https://ja.wikipedia.org/wiki/%E7%99%BD%E5%B7%9D%E9%83%B7%E3%83%BB%E4%BA%94%E7%AE%87%E5%B1%B1%E3%81%AE%E5%90%88%E6%8E%8C%E9%80%A0%E3%82%8A%E9%9B%86%E8%90%BD",
-  "title": "白川郷・五箇山の合掌造り集落"
+  "page": "https://commons.wikimedia.org/wiki/File:Shirakawa_Go_At_Night_(198621599).jpeg",
+  "title": "Shirakawa Go At Night (198621599).jpeg"
  },
  "osaka:오사카성": {
   "src": "images/p003.jpg",
@@ -137,8 +137,8 @@ const PHOTOS = {
  },
  "nagoya:시라카와고": {
   "src": "images/p028.jpg",
-  "page": "https://ja.wikipedia.org/wiki/%E7%99%BD%E5%B7%9D%E9%83%B7",
-  "title": "白川郷"
+  "page": "https://commons.wikimedia.org/wiki/File:Snow_in_Ogimachi_Area,_Shirakawa_village,_Gifu.JPG",
+  "title": "Snow in Ogimachi Area, Shirakawa village, Gifu.JPG"
  },
  "nagoya:다카야마 옛 거리": {
   "src": "images/p029.jpg",
@@ -292,8 +292,8 @@ const PHOTOS = {
  },
  "hero:nagoya:3": {
   "src": "images/p063.jpg",
-  "page": "https://ja.wikipedia.org/wiki/%E5%90%88%E6%8E%8C%E9%80%A0%E3%82%8A",
-  "title": "合掌造り"
+  "page": "https://commons.wikimedia.org/wiki/File:Gassho-zukuri_2.jpg",
+  "title": "Gassho-zukuri 2.jpg"
  },
  "hero:nagoya:4": {
   "src": "images/p064.jpg",

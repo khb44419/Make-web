@@ -228,38 +228,76 @@ function showView(view) {
 }
 
 // ===== 여행코스 =====
+const WEEKDAY = { 월: "월요일", 화: "화요일", 수: "수요일", 목: "목요일", 금: "금요일", 토: "토요일", 일: "일요일" };
+let planStops = [];
+
 function renderPlan() {
   const c = CITIES[state.city];
   if (state.day >= c.plan.length) state.day = 0;
   $("day-chips").innerHTML = c.plan.map((d, i) =>
     `<button type="button" role="tab" aria-selected="${i === state.day}" data-day="${i}">Day ${i + 1}</button>`).join("");
-  $("day-chips").querySelectorAll("button").forEach(b => b.onclick = () => { state.day = +b.dataset.day; renderPlan(); });
+  $("day-chips").querySelectorAll("button").forEach(b => b.onclick = () => { state.day = +b.dataset.day; renderPlan(); scrollTo(0, 0); });
 
   const d = c.plan[state.day];
-  const stops = d.stops.map(k => resolveStop(state.city, k)).filter(Boolean);
+  const stops = planStops = d.stops.map(k => resolveStop(state.city, k)).filter(Boolean);
+  const sights = stops.filter(s => s.kind !== "spot");
+  const foods = places(state.city).filter(p => p.kind === "foods" && p.day === state.day + 1);
+  const m = d.title.match(/^(.*?)\s*\((.)\)$/);
+  const title = m ? m[1] : d.title, wd = m ? WEEKDAY[m[2]] || "" : "";
+
+  // 1) 그날의 제목 (사진은 아래 코스 카드에서 크게 보여주므로 여기선 겹치지 않게 색 띠로)
+  $("plan-hero").innerHTML = `
+    <div class="hero-text">
+      <span class="hero-eyebrow">DAY ${state.day + 1}${wd ? ` · ${wd}` : ""}</span>
+      <h2>${esc(title)}</h2>
+      <span class="hero-sub">관광지 ${sights.length}곳${foods.length ? ` · 근처 먹거리 ${foods.length}곳` : ""}</span>
+    </div>`;
+
+  // 2) 코스: 관광지는 큰 사진 카드, 공항·숙소는 작은 줄
+  let n = 0;
+  $("plan-stops").innerHTML = stops.map((s, i) => {
+    const leg = i < stops.length - 1 ? `<li class="leg" aria-hidden="true"><span></span></li>` : "";
+    if (s.kind === "spot") {
+      const icon = /공항/.test(s.name) ? "空" : "宿";
+      return `<li class="stop-mini"><span class="mini-ico">${icon}</span><b>${esc(s.name)}</b>
+        <a href="${gmapsSearch(s.q)}" target="_blank" rel="noopener">지도 ↗</a></li>${leg}`;
+    }
+    n++;
+    return `<li class="stop-card">
+        ${photo(s.id, "景", "stop-photo")}
+        <span class="stop-num">${n}</span>
+        <div class="stop-body"><b>${esc(s.name)}</b>${s.desc ? `<p>${esc(s.desc)}</p>` : ""}
+          <a href="${gmapsSearch(s.q)}" target="_blank" rel="noopener">구글 지도에서 보기 ↗</a></div>
+      </li>${leg}`;
+  }).join("");
+
+  $("plan-tips").innerHTML = d.tips.map(t => `<li>${esc(t)}</li>`).join("");
+  $("plan-gmaps").href = "https://www.google.com/maps/dir/" + stops.map(s => encodeURIComponent(s.q)).join("/");
+  $("plan-foods").innerHTML = foods.length ? `<h2>이 날 근처 먹거리</h2><ul class="mini-foods">${foods.map(p =>
+    `<li>${photo(p.id, "食", "thumb")}<div><span class="ftype">${esc(p.type)}</span><b>${esc(p.name)}</b><p>${esc(p.desc)}</p><a href="${gmapsSearch(p.q)}" target="_blank" rel="noopener">구글 지도 ↗</a></div></li>`).join("")}</ul>
+    <a class="link-btn" href="#/${state.city}/foods">먹거리 전체 보기 ›</a>` : "";
+  if ($("plan-map-box").open) drawPlanMap();
+}
+
+// 3) 지도는 접어 두고, 펼쳤을 때만 그린다
+function drawPlanMap() {
+  const stops = planStops;
   if (!planMap) planMap = makeMap($("plan-map"));
+  if (planMap._dead) return;
   planMap._layer.clearLayers();
   const latlngs = stops.map(s => s.pos);
-  if (!planMap._dead) {
   L.polyline(latlngs, { color: getComputedStyle(document.documentElement).getPropertyValue("--ume").trim(), weight: 4, dashArray: "8 8", opacity: .9 }).addTo(planMap._layer);
-  const seen = new Set(); // 같은 곳으로 돌아오는 경우(숙소 복귀) 핀이 겹치지 않게 처음 것만 표시
-  stops.forEach((s, i) => !seen.has(s.name) && seen.add(s.name) && L.marker(s.pos, { icon: pinIcon(i + 1, s.kind === "spot" ? "spot" : s.kind) }).bindPopup(popupHtml(s)).addTo(planMap._layer));
+  const seen = new Set(); // 숙소로 돌아오는 경우 핀이 겹치지 않게 처음 것만 표시
+  let n = 0;
+  stops.forEach(s => {
+    if (seen.has(s.name)) return;
+    seen.add(s.name);
+    const label = s.kind === "spot" ? (/공항/.test(s.name) ? "空" : "宿") : ++n;
+    L.marker(s.pos, { icon: pinIcon(label, s.kind === "spot" ? "spot" : s.kind) }).bindPopup(popupHtml(s)).addTo(planMap._layer);
+  });
   setTimeout(() => { planMap.invalidateSize(); planMap.fitBounds(latlngs, { padding: [36, 36], maxZoom: 15 }); }, 0);
-  }
-
-  $("plan-gmaps").href = "https://www.google.com/maps/dir/" + stops.map(s => encodeURIComponent(s.q)).join("/");
-  $("plan-stops").innerHTML = stops.map((s, i) => `<li>
-      <span class="num ${s.kind === "spot" ? "spot" : ""}">${i + 1}</span>
-      <div><b>${esc(s.name)}</b>${s.desc ? `<p>${esc(s.desc)}</p>` : ""}<a href="${gmapsSearch(s.q)}" target="_blank" rel="noopener">구글 지도 ↗</a></div>
-      ${photo(s.id, s.kind === "spot" ? "駅" : s.kind === "foods" ? "食" : "景", "thumb")}
-    </li>`).join("");
-  loadPhotos($("plan-stops"));
-  $("plan-tips").innerHTML = `<li><b>Day ${state.day + 1} · ${esc(d.title)}</b></li>` + d.tips.map(t => `<li>${esc(t)}</li>`).join("");
-  const foods = places(state.city).filter(p => p.kind === "foods" && p.day === state.day + 1);
-  $("plan-foods").innerHTML = foods.length ? `<h2>이 날 근처 먹거리</h2><ul class="mini-foods">${foods.map(p =>
-    `<li><span class="ftype">${esc(p.type)}</span><b>${esc(p.name)}</b><p>${esc(p.desc)}</p><a href="${gmapsSearch(p.q)}" target="_blank" rel="noopener">구글 지도 ↗</a></li>`).join("")}</ul>
-    <a class="link-btn" href="#/${state.city}/foods">먹거리 전체 보기 ›</a>` : "";
 }
+$("plan-map-box").addEventListener("toggle", () => { if ($("plan-map-box").open) drawPlanMap(); });
 
 // ===== 먹거리 / 관광지 =====
 function placeCard(p) {

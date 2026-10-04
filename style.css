@@ -297,3 +297,50 @@ table.yen tr.group td { font-family: var(--display); font-weight: 700; color: va
 .mini-foods li { display: grid; justify-items: start; gap: 2px; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px; }
 .mini-foods p { margin: 0; font-size: .85rem; color: var(--muted); }
 .mini-foods a { font-size: .82rem; }
+
+/* ---------- 여행코스: 사진 중심 ---------- */
+.day-hero {
+  position: relative; border-radius: var(--radius); overflow: hidden; display: grid; align-items: end;
+  background: radial-gradient(circle at 88% 20%, rgba(255,255,255,.18) 0 38px, transparent 39px),
+              radial-gradient(circle at 76% 70%, rgba(255,255,255,.12) 0 22px, transparent 23px),
+              linear-gradient(135deg, var(--ume), #7e1f43);
+}
+.day-hero .hero-img { position: absolute; inset: 0; background: center / cover no-repeat; }
+.day-hero .hero-img::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,0) 30%, rgba(30,10,18,.72)); }
+.day-hero .hero-text { position: relative; padding: 18px; display: grid; gap: 2px; color: #fff; }
+.day-hero h2 { font-size: clamp(1.5rem, 6.5vw, 1.9rem); line-height: 1.25; color: #fff; }
+.hero-eyebrow { font-size: .75rem; letter-spacing: .14em; font-weight: 700; color: #ffd9e3; }
+.hero-sub { font-size: .82rem; opacity: .9; }
+
+.course { list-style: none; margin: 0; padding: 0; display: grid; }
+.stop-card { position: relative; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; }
+.stop-card .stop-photo { aspect-ratio: 16 / 10; }
+.stop-num {
+  position: absolute; top: 12px; left: 12px; width: 38px; height: 38px; border-radius: 50%; display: grid; place-items: center;
+  background: var(--ume); color: #fff; font: 700 1.05rem/1 var(--display); box-shadow: 0 2px 8px rgba(0,0,0,.3);
+}
+.stop-body { padding: 14px 16px 16px; display: grid; justify-items: start; gap: 4px; }
+.stop-body b { font-family: var(--display); font-size: 1.2rem; }
+.stop-body p { margin: 0; font-size: .9rem; color: var(--muted); }
+.stop-body a, .stop-mini a { font-size: .82rem; }
+.stop-mini {
+  display: flex; align-items: center; gap: 10px; padding: 10px 14px; background: var(--surface);
+  border: 1px dashed var(--line); border-radius: 12px;
+}
+.stop-mini b { flex: 1; font-size: .95rem; }
+.stop-mini .mini-ico { background: var(--gold); color: #fff; }
+.leg { height: 26px; display: grid; place-items: center; }
+.leg span { width: 0; height: 100%; border-left: 2px dashed var(--ume); position: relative; }
+.leg span::after { content: ""; position: absolute; bottom: -2px; left: -6px; border: 5px solid transparent; border-top: 7px solid var(--ume); }
+
+.route-tools { display: grid; gap: 10px; }
+.map-box { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; }
+.map-box summary { cursor: pointer; padding: 12px 16px; font-weight: 700; color: var(--ume); list-style: none; }
+.map-box summary::-webkit-details-marker { display: none; }
+.map-box summary::after { content: "펼치기 ▾"; float: right; font-weight: 400; color: var(--muted); font-size: .85rem; }
+.map-box[open] summary::after { content: "접기 ▴"; }
+.map-box .map { border: 0; border-radius: 0; }
+
+.mini-foods li { grid-template-columns: 72px 1fr; align-items: start; gap: 12px; }
+.mini-foods li > div { display: grid; justify-items: start; gap: 2px; min-width: 0; }
+.mini-foods .ph.thumb { width: 72px; height: 72px; }

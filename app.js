@@ -56,8 +56,10 @@ async function wikiImage(title) {
     return v;
   } catch { return null; }
 }
-const photo = (title, fallback, cls = "") => title
-  ? `<div class="ph ${cls}" data-wiki="${esc(title)}"><span class="ph-kanji">${esc(fallback)}</span><a class="credit" target="_blank" rel="noopener">사진 · 위키백과</a></div>`
+// 링크 안에 들어가는 사진(첫 화면 도시 카드)은 출처를 링크 대신 글자로 표시 (a 안에 a 금지)
+const photo = (title, fallback, cls = "", inLink = false) => title
+  ? `<div class="ph ${cls}" data-wiki="${esc(title)}"><span class="ph-kanji">${esc(fallback)}</span>${inLink
+      ? `<span class="credit">사진 · 위키백과</span>` : `<a class="credit" target="_blank" rel="noopener">사진 · 위키백과</a>`}</div>`
   : `<div class="ph ${cls}"><span class="ph-kanji">${esc(fallback)}</span></div>`;
 function loadPhotos(root = document) {
   root.querySelectorAll(".ph[data-wiki]:not(.tried)").forEach(async el => {
@@ -69,7 +71,7 @@ function loadPhotos(root = document) {
       const img = new Image();
       img.onload = () => {
         el.style.backgroundImage = `url("${v.srcs[i]}")`; el.classList.add("loaded");
-        const a = el.querySelector(".credit"); if (a) a.href = v.page;
+        const a = el.querySelector("a.credit"); if (a) a.href = v.page;
       };
       img.onerror = () => tryLoad(i + 1);
       img.src = v.srcs[i];
@@ -150,16 +152,14 @@ function budgetTotal(b) {
   return b.flight * 2 + b.hotel * 3 + b.food * 4 * 2 + (b.transport + b.act) * b.rate / 100 * 2 + b.shop;
 }
 function renderCityCovers() {
-  document.querySelectorAll(".city-card").forEach(card => {
-    const key = card.getAttribute("href").slice(2);
-    if (!card.querySelector(".ph")) card.insertAdjacentHTML("afterbegin", photo(CITIES[key].cover, CITIES[key].kanji, "cover"));
-  });
-  loadPhotos();
+  $("city-pick").innerHTML = Object.entries(CITIES).map(([key, c]) =>
+    `<a class="city-card" href="#/${key}">${photo(c.cover, c.kanji, "cover", true)}<span class="kanji">${c.kanji}</span><b>${c.name}</b><small>${esc(c.pickLine)}</small></a>`).join("");
+  loadPhotos($("city-pick"));
 }
 renderCityCovers();
 
 function renderCompare() {
-  const keys = ["osaka", "nagoya"];
+  const keys = Object.keys(CITIES);
   const rows = [
     ["예상 예산 (둘이)", k => won(budgetTotal(getBudget(k)))],
     ["비행시간 (대구 출발)", k => CITIES[k].compare.flightTime],

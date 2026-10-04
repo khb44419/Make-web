@@ -73,11 +73,12 @@ a { color: var(--ume); }
 .compare { display: grid; gap: 10px; }
 .compare h2 { font-size: 1.15rem; }
 .table-wrap { overflow-x: auto; }
-#compare { width: 100%; border-collapse: collapse; font-size: .9rem; background: var(--surface); border-radius: var(--radius); overflow: hidden; }
+#compare { width: 100%; min-width: 500px; border-collapse: collapse; font-size: .88rem; background: var(--surface); border-radius: var(--radius); overflow: hidden; }
 #compare th, #compare td { padding: 10px 12px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
 #compare tr:last-child th, #compare tr:last-child td { border-bottom: 0; }
 #compare thead th { font-family: var(--display); color: var(--ume); font-size: 1rem; }
-#compare tbody th { color: var(--muted); font-weight: 400; font-size: .8rem; white-space: nowrap; }
+#compare tbody th { color: var(--muted); font-weight: 400; font-size: .8rem; white-space: nowrap; position: sticky; left: 0; background: var(--surface); }
+#compare thead th:first-child { position: sticky; left: 0; background: var(--surface); }
 #compare td { font-variant-numeric: tabular-nums; }
 
 .link-btn { background: none; border: 0; color: var(--muted); font-size: .85rem; text-decoration: underline; cursor: pointer; justify-self: center; padding: 8px; }

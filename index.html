@@ -15,7 +15,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Gowun+Dodum&display=swap">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
-<link rel="stylesheet" href="style.css?v=8">
+<link rel="stylesheet" href="style.css?v=10">
 </head>
 <body>
 <canvas id="petals" aria-hidden="true"></canvas>
@@ -38,9 +38,7 @@
     <div class="seal" id="dday"></div>
   </header>
 
-  <nav class="city-pick" aria-label="여행지 선택">
-    <a class="city-card" href="#/osaka"><span class="kanji">大阪</span><b>오사카</b><small>먹방 · 야경 · USJ</small></a>
-    <a class="city-card" href="#/nagoya"><span class="kanji">名古屋</span><b>나고야</b><small>미소카츠 · 성 · 지브리 파크</small></a>
+  <nav class="city-pick" id="city-pick" aria-label="여행지 선택">
   </nav>
 
   <section class="compare">
@@ -48,7 +46,7 @@
     <div class="table-wrap">
       <table id="compare"></table>
     </div>
-    <p class="note">예상 예산은 시세 평균값 기준이에요. 각 도시의 예산 메뉴에서 고칠 수 있어요.</p>
+    <p class="note">표를 옆으로 밀면 다른 도시도 보여요. 예상 예산은 시세 평균값 기준이에요. 각 도시의 예산 메뉴에서 고칠 수 있어요.</p>
   </section>
 
   <button class="link-btn" id="petal-toggle" type="button"></button>
@@ -177,7 +175,7 @@
 <div class="toast" id="toast" role="status" hidden></div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
-<script src="data.js?v=8"></script>
-<script src="app.js?v=8"></script>
+<script src="data.js?v=10"></script>
+<script src="app.js?v=10"></script>
 </body>
 </html>

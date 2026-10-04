@@ -130,12 +130,13 @@ a { color: var(--ume); }
 
 /* ---------- 상세 ---------- */
 .view { display: grid; gap: 14px; }
-.chips { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 2px; scrollbar-width: none; }
+.chips { display: flex; gap: 20px; overflow-x: auto; scrollbar-width: none; border-bottom: 1px solid var(--line); padding: 0 4px; }
+.chips::-webkit-scrollbar { display: none; }
 .chips button {
-  flex: none; min-height: 38px; padding: 6px 14px; border-radius: 999px; border: 1px solid var(--line);
-  background: var(--surface); cursor: pointer; font-size: .9rem; white-space: nowrap;
+  flex: none; background: none; border: 0; border-bottom: 2px solid transparent; margin-bottom: -1px;
+  padding: 10px 0; color: var(--muted); font-size: .92rem; cursor: pointer; white-space: nowrap;
 }
-.chips button[aria-pressed="true"], .chips button[aria-selected="true"] { background: var(--ume); color: var(--surface); border-color: var(--ume); }
+.chips button[aria-pressed="true"], .chips button[aria-selected="true"] { color: var(--ink); border-bottom-color: var(--ume); font-weight: 700; }
 
 .map { height: 300px; border-radius: var(--radius); border: 1px solid var(--line); overflow: hidden; z-index: 1; background: var(--ume-soft); }
 .map.tall { height: 62vh; min-height: 360px; }
@@ -298,41 +299,6 @@ table.yen tr.group td { font-family: var(--display); font-weight: 700; color: va
 .mini-foods p { margin: 0; font-size: .85rem; color: var(--muted); }
 .mini-foods a { font-size: .82rem; }
 
-/* ---------- 여행코스: 사진 중심 ---------- */
-.day-hero {
-  position: relative; border-radius: var(--radius); overflow: hidden; display: grid; align-items: end;
-  background: radial-gradient(circle at 88% 20%, rgba(255,255,255,.18) 0 38px, transparent 39px),
-              radial-gradient(circle at 76% 70%, rgba(255,255,255,.12) 0 22px, transparent 23px),
-              linear-gradient(135deg, var(--ume), #7e1f43);
-}
-.day-hero .hero-img { position: absolute; inset: 0; background: center / cover no-repeat; }
-.day-hero .hero-img::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,0) 30%, rgba(30,10,18,.72)); }
-.day-hero .hero-text { position: relative; padding: 18px; display: grid; gap: 2px; color: #fff; }
-.day-hero h2 { font-size: clamp(1.5rem, 6.5vw, 1.9rem); line-height: 1.25; color: #fff; }
-.hero-eyebrow { font-size: .75rem; letter-spacing: .14em; font-weight: 700; color: #ffd9e3; }
-.hero-sub { font-size: .82rem; opacity: .9; }
-
-.course { list-style: none; margin: 0; padding: 0; display: grid; }
-.stop-card { position: relative; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; }
-.stop-card .stop-photo { aspect-ratio: 16 / 10; }
-.stop-num {
-  position: absolute; top: 12px; left: 12px; width: 38px; height: 38px; border-radius: 50%; display: grid; place-items: center;
-  background: var(--ume); color: #fff; font: 700 1.05rem/1 var(--display); box-shadow: 0 2px 8px rgba(0,0,0,.3);
-}
-.stop-body { padding: 14px 16px 16px; display: grid; justify-items: start; gap: 4px; }
-.stop-body b { font-family: var(--display); font-size: 1.2rem; }
-.stop-body p { margin: 0; font-size: .9rem; color: var(--muted); }
-.stop-body a, .stop-mini a { font-size: .82rem; }
-.stop-mini {
-  display: flex; align-items: center; gap: 10px; padding: 10px 14px; background: var(--surface);
-  border: 1px dashed var(--line); border-radius: 12px;
-}
-.stop-mini b { flex: 1; font-size: .95rem; }
-.stop-mini .mini-ico { background: var(--gold); color: #fff; }
-.leg { height: 26px; display: grid; place-items: center; }
-.leg span { width: 0; height: 100%; border-left: 2px dashed var(--ume); position: relative; }
-.leg span::after { content: ""; position: absolute; bottom: -2px; left: -6px; border: 5px solid transparent; border-top: 7px solid var(--ume); }
-
 .route-tools { display: grid; gap: 10px; }
 .map-box { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; }
 .map-box summary { cursor: pointer; padding: 12px 16px; font-weight: 700; color: var(--ume); list-style: none; }
@@ -344,3 +310,68 @@ table.yen tr.group td { font-family: var(--display); font-weight: 700; color: va
 .mini-foods li { grid-template-columns: 72px 1fr; align-items: start; gap: 12px; }
 .mini-foods li > div { display: grid; justify-items: start; gap: 2px; min-width: 0; }
 .mini-foods .ph.thumb { width: 72px; height: 72px; }
+
+/* ---------- 디자인 B: 매거진 스토리 ---------- */
+#view-plan { gap: 18px; }
+.day-hero { position: relative; margin: -16px -16px 0; height: 360px; display: grid; align-items: end; overflow: hidden; background: var(--ume-soft); }
+.day-hero .hero-img { position: absolute; inset: 0; background: center / cover no-repeat; }
+.day-hero::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,0) 35%, rgba(20,8,14,.8)); }
+.day-hero .hero-text { position: relative; z-index: 1; padding: 0 20px 22px; color: #fff; display: grid; gap: 6px; }
+.day-hero small { font-size: .7rem; letter-spacing: .25em; opacity: .9; }
+.day-hero h2 { font-size: clamp(1.7rem, 7.5vw, 2.1rem); line-height: 1.25; color: #fff; }
+.day-hero p { margin: 0; font-size: .88rem; opacity: .88; }
+
+.course { list-style: none; margin: 0; padding: 0; display: grid; gap: 0; }
+.stop-card, .sight-img {
+  position: relative; height: 300px; border-radius: 24px; overflow: hidden; background: var(--ume-soft) center / cover no-repeat;
+  box-shadow: 0 14px 30px -18px rgba(0,0,0,.55);
+}
+.stop-card::after, .sight-img::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, transparent 40%, rgba(15,5,10,.8)); }
+.stop-text { position: absolute; left: 18px; right: 18px; bottom: 16px; z-index: 1; color: #fff; display: grid; gap: 2px; }
+.stop-text .n { font: 700 2.4rem/1 var(--display); opacity: .92; }
+.stop-text h3 { font-size: 1.45rem; line-height: 1.25; color: #fff; }
+.stop-text p { margin: 0; font-size: .82rem; opacity: .88; color: #fff; }
+.pill {
+  position: absolute; top: 14px; right: 14px; z-index: 2; font-size: .78rem; text-decoration: none; color: #fff;
+  background: rgba(20,8,14,.45); backdrop-filter: blur(4px); padding: 4px 10px; border-radius: 999px;
+}
+.stop-line { display: flex; align-items: center; gap: 10px; padding: 12px 4px; border-bottom: 1px solid var(--line); }
+.stop-line .ico { width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center; background: var(--ume-soft); color: var(--ume); font-size: .9rem; }
+.stop-line b { flex: 1; font-weight: 400; font-size: .95rem; }
+.stop-line a { font-size: .8rem; }
+.leg { display: flex; align-items: center; gap: 10px; color: var(--muted); font-size: .8rem; padding: 14px 8px; }
+.leg::before, .leg::after { content: ""; flex: 1; border-top: 1px solid var(--line); }
+
+#plan-tips { list-style: none; padding: 14px 16px; background: var(--surface); border: 1px solid var(--line); border-radius: 18px; display: grid; gap: 6px; }
+#plan-tips li { padding-left: 14px; position: relative; }
+#plan-tips li::before { content: ""; position: absolute; left: 0; top: .65em; width: 5px; height: 5px; border-radius: 50%; background: var(--ume); }
+
+.sec-head { display: flex; align-items: baseline; justify-content: space-between; }
+.sec-head h2 { font-size: 1.25rem; }
+.sec-head a { font-size: .85rem; text-decoration: none; }
+.food-scroll { display: flex; gap: 12px; overflow-x: auto; margin-right: -16px; padding: 2px 16px 6px 0; scroll-snap-type: x mandatory; scrollbar-width: none; }
+.food-scroll::-webkit-scrollbar { display: none; }
+.food-tile { flex: none; width: 150px; text-decoration: none; color: var(--ink); scroll-snap-align: start; display: grid; gap: 2px; }
+.food-tile .img { display: block; aspect-ratio: 1; border-radius: 18px; background: var(--ume-soft) center / cover; margin-bottom: 4px; }
+.food-tile small { color: var(--ume); font-size: .7rem; letter-spacing: .08em; }
+.food-tile b { font-size: .92rem; line-height: 1.35; }
+
+/* 먹거리 · 관광지 목록 */
+.places.grid2 { grid-template-columns: 1fr 1fr; gap: 16px 12px; }
+.places .group-head { grid-column: 1 / -1; display: grid; gap: 2px; padding: 18px 2px 0; border: 0; background: none; }
+.places .group-head small { color: var(--ume); font-size: .7rem; letter-spacing: .2em; }
+.places .group-head b { font-family: var(--display); font-size: 1.2rem; }
+.places li.food-card, .places li.sight-card { border: 0; background: none; border-radius: 0; overflow: visible; display: grid; gap: 8px; padding: 0; }
+.food-img { position: relative; aspect-ratio: 1; border-radius: 18px; background: var(--ume-soft) center / cover no-repeat; }
+.food-body { display: grid; gap: 2px; min-width: 0; }
+.food-body small { color: var(--ume); font-size: .7rem; letter-spacing: .08em; }
+.food-body b { font-size: .95rem; line-height: 1.35; }
+.food-body p { margin: 0; font-size: .8rem; color: var(--muted); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.food-card .links, .sight-card .links { display: flex; gap: 12px; font-size: .78rem; margin-top: 2px; }
+.sight-card .links { padding: 0 4px; }
+.places .star {
+  position: absolute; top: 8px; right: 8px; z-index: 2; width: 36px; height: 36px; margin: 0; border-radius: 50%;
+  background: rgba(255,255,255,.85); color: var(--muted); font-size: 1.1rem; display: grid; place-items: center;
+}
+.places .star.on { color: var(--ume); }
+.places .empty { grid-column: 1 / -1; }

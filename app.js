@@ -231,6 +231,9 @@ function showView(view) {
 const WEEKDAY = { 월: "월요일", 화: "화요일", 수: "수요일", 목: "목요일", 금: "금요일", 토: "토요일", 일: "일요일" };
 let planStops = [];
 
+const WEEKDAY_EN = { 월: "MONDAY", 화: "TUESDAY", 수: "WEDNESDAY", 목: "THURSDAY", 금: "FRIDAY", 토: "SATURDAY", 일: "SUNDAY" };
+const bg = id => { const p = typeof PHOTOS !== "undefined" && PHOTOS[id]; return p ? ` style="background-image:url('${esc(p.src)}')"` : ""; };
+
 function renderPlan() {
   const c = CITIES[state.city];
   if (state.day >= c.plan.length) state.day = 0;
@@ -242,40 +245,39 @@ function renderPlan() {
   const stops = planStops = d.stops.map(k => resolveStop(state.city, k)).filter(Boolean);
   const sights = stops.filter(s => s.kind !== "spot");
   const foods = places(state.city).filter(p => p.kind === "foods" && p.day === state.day + 1);
-  const m = d.title.match(/^(.*?)\s*\((.)\)$/);
-  const title = m ? m[1] : d.title, wd = m ? WEEKDAY[m[2]] || "" : "";
+  const m = d.title.match(/\((.)\)$/);
+  const wd = m ? WEEKDAY_EN[m[1]] || "" : "";
+  const dd = String(state.day + 1).padStart(2, "0");
 
-  // 1) 그날의 제목 (사진은 아래 코스 카드에서 크게 보여주므로 여기선 겹치지 않게 색 띠로)
-  $("plan-hero").innerHTML = `
-    <div class="hero-text">
-      <span class="hero-eyebrow">DAY ${state.day + 1}${wd ? ` · ${wd}` : ""}</span>
-      <h2>${esc(title)}</h2>
-      <span class="hero-sub">관광지 ${sights.length}곳${foods.length ? ` · 근처 먹거리 ${foods.length}곳` : ""}</span>
-    </div>`;
+  // 1) 그날의 대표 사진 + 감성 제목
+  const heroId = PHOTOS[`hero:${state.city}:${state.day + 1}`] ? `hero:${state.city}:${state.day + 1}` : sights[0] && sights[0].id;
+  $("plan-hero").innerHTML = `<div class="hero-img"${bg(heroId)}></div>
+    <div class="hero-text"><small>DAY ${dd}${wd ? ` · ${wd}` : ""}</small>
+      <h2>${esc(d.headline || d.title)}</h2>
+      <p>${sights.map(s => esc(s.name)).join(" → ")}</p></div>`;
 
-  // 2) 코스: 관광지는 큰 사진 카드, 공항·숙소는 작은 줄
+  // 2) 코스: 관광지는 사진 위에 글씨를 얹은 큰 카드, 공항·숙소는 얇은 줄, 사이에 이동 수단
   let n = 0;
   $("plan-stops").innerHTML = stops.map((s, i) => {
-    const leg = i < stops.length - 1 ? `<li class="leg" aria-hidden="true"><span></span></li>` : "";
+    const leg = i < stops.length - 1 ? `<li class="leg"><span>${esc((d.legs && d.legs[i]) || "이동")}</span></li>` : "";
     if (s.kind === "spot") {
-      const icon = /공항/.test(s.name) ? "空" : "宿";
-      return `<li class="stop-mini"><span class="mini-ico">${icon}</span><b>${esc(s.name)}</b>
-        <a href="${gmapsSearch(s.q)}" target="_blank" rel="noopener">지도 ↗</a></li>${leg}`;
+      const icon = /공항/.test(s.name) ? "✈" : "⌂";
+      return `<li class="stop-line"><span class="ico">${icon}</span><b>${esc(s.name)}</b><a href="${gmapsSearch(s.q)}" target="_blank" rel="noopener">지도 ↗</a></li>${leg}`;
     }
     n++;
-    return `<li class="stop-card">
-        ${photo(s.id, "景", "stop-photo")}
-        <span class="stop-num">${n}</span>
-        <div class="stop-body"><b>${esc(s.name)}</b>${s.desc ? `<p>${esc(s.desc)}</p>` : ""}
-          <a href="${gmapsSearch(s.q)}" target="_blank" rel="noopener">구글 지도에서 보기 ↗</a></div>
+    return `<li class="stop-card"${bg(s.id)}>
+        <a class="pill" href="${gmapsSearch(s.q)}" target="_blank" rel="noopener">지도 ↗</a>
+        <div class="stop-text"><span class="n">${String(n).padStart(2, "0")}</span><h3>${esc(s.name)}</h3>${s.desc ? `<p>${esc(s.desc)}</p>` : ""}</div>
       </li>${leg}`;
   }).join("");
 
   $("plan-tips").innerHTML = d.tips.map(t => `<li>${esc(t)}</li>`).join("");
   $("plan-gmaps").href = "https://www.google.com/maps/dir/" + stops.map(s => encodeURIComponent(s.q)).join("/");
-  $("plan-foods").innerHTML = foods.length ? `<h2>이 날 근처 먹거리</h2><ul class="mini-foods">${foods.map(p =>
-    `<li>${photo(p.id, "食", "thumb")}<div><span class="ftype">${esc(p.type)}</span><b>${esc(p.name)}</b><p>${esc(p.desc)}</p><a href="${gmapsSearch(p.q)}" target="_blank" rel="noopener">구글 지도 ↗</a></div></li>`).join("")}</ul>
-    <a class="link-btn" href="#/${state.city}/foods">먹거리 전체 보기 ›</a>` : "";
+
+  // 4) 오늘의 맛: 옆으로 넘겨 보는 사진 줄
+  $("plan-foods").innerHTML = foods.length ? `<div class="sec-head"><h2>오늘의 맛</h2><a href="#/${state.city}/foods">전체 보기 ›</a></div>
+    <div class="food-scroll">${foods.map(p => `<a class="food-tile" href="${gmapsSearch(p.q)}" target="_blank" rel="noopener">
+      <span class="img"${bg(p.id)}></span><small>${esc(p.type)}</small><b>${esc(p.name)}</b></a>`).join("")}</div>` : "";
   if ($("plan-map-box").open) drawPlanMap();
 }
 
@@ -302,14 +304,17 @@ $("plan-map-box").addEventListener("toggle", () => { if ($("plan-map-box").open)
 // ===== 먹거리 / 관광지 =====
 function placeCard(p) {
   const on = state.picks.has(p.id);
-  return `<li>
-      ${photo(p.id, p.kind === "foods" ? "食" : "景")}
-      <div class="row">
-        <div class="body">${p.type ? `<span class="ftype">${esc(p.type)}</span>` : ""}<b>${esc(p.name)}</b><p>${esc(p.desc)}</p>
-          <div class="links"><a href="${gmapsSearch(p.q)}" target="_blank" rel="noopener">구글 지도 ↗</a>
-            <button type="button" data-focus="${esc(p.id)}">지도에서 보기</button></div></div>
-        <button class="star ${on ? "on" : ""}" type="button" data-id="${esc(p.id)}" aria-label="${esc(p.name)} 찜하기" aria-pressed="${on}">${on ? "★" : "☆"}</button>
-      </div>
+  const star = `<button class="star ${on ? "on" : ""}" type="button" data-id="${esc(p.id)}" aria-label="${esc(p.name)} 찜하기" aria-pressed="${on}">${on ? "★" : "☆"}</button>`;
+  const links = `<div class="links"><a href="${gmapsSearch(p.q)}" target="_blank" rel="noopener">구글 지도 ↗</a>
+      <button type="button" data-focus="${esc(p.id)}">지도에서 보기</button></div>`;
+  if (p.kind === "sights") { // 관광지: 사진 위에 이름을 얹은 큰 카드
+    return `<li class="sight-card">
+      <div class="sight-img"${bg(p.id)}>${star}<div class="stop-text"><h3>${esc(p.name)}</h3><p>${esc(p.desc)}</p></div></div>
+      ${links}</li>`;
+  }
+  return `<li class="food-card"> 
+      <div class="food-img"${bg(p.id)}>${star}</div>
+      <div class="food-body"><small>${esc(p.type || "")}</small><b>${esc(p.name)}</b><p>${esc(p.desc)}</p>${links}</div>
     </li>`;
 }
 function bindCards(root, rerender) {
@@ -339,12 +344,13 @@ function renderList() {
   if (state.listFilter === "picks") list = list.filter(p => state.picks.has(p.id));
   if (state.listFilter.startsWith("d")) list = list.filter(p => p.day === +state.listFilter.slice(1));
   const ul = $("places");
+  ul.className = "places" + (kind === "foods" ? " grid2" : "");
   if (!list.length) { ul.innerHTML = `<li class="empty">아직 찜한 곳이 없어요.<br>☆를 눌러 가고 싶은 곳을 담아보세요.</li>`; return; }
   if (kind === "foods") {
     const days = [...new Set(list.map(p => p.day))].sort();
     ul.innerHTML = days.map(day => {
       const plan = c.plan[day - 1];
-      return `<li class="group-head"><span>Day ${day}</span>${esc(plan ? plan.title : "")}</li>` +
+      return `<li class="group-head"><small>DAY ${String(day).padStart(2, "0")}</small><b>${esc(plan ? (plan.headline || plan.title) : "")}</b></li>` +
         list.filter(p => p.day === day).map(placeCard).join("");
     }).join("");
   } else {

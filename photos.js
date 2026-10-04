@@ -259,5 +259,45 @@ const PHOTOS = {
   "src": "images/p054.jpg",
   "page": "https://ja.wikipedia.org/wiki/%E5%90%8D%E5%8F%A4%E5%B1%8B%E9%A7%85",
   "title": "名古屋駅"
+ },
+ "hero:osaka:1": {
+  "src": "images/p056.jpg",
+  "page": "https://ja.wikipedia.org/wiki/%E6%B3%95%E5%96%84%E5%AF%BA",
+  "title": "法善寺"
+ },
+ "hero:osaka:2": {
+  "src": "images/p057.jpg",
+  "page": "https://ja.wikipedia.org/wiki/%E3%82%B6%E3%83%BB%E3%83%95%E3%83%A9%E3%82%A4%E3%83%B3%E3%82%B0%E3%83%BB%E3%83%80%E3%82%A4%E3%83%8A%E3%82%BD%E3%83%BC",
+  "title": "ザ・フライング・ダイナソー"
+ },
+ "hero:osaka:3": {
+  "src": "images/p059.jpg",
+  "page": "https://en.wikipedia.org/wiki/Tempozan_Ferris_Wheel",
+  "title": "Tempozan Ferris Wheel"
+ },
+ "hero:osaka:4": {
+  "src": "images/p060.jpg",
+  "page": "https://ja.wikipedia.org/wiki/%E3%81%82%E3%81%B9%E3%81%AE%E3%83%8F%E3%83%AB%E3%82%AB%E3%82%B9",
+  "title": "あべのハルカス"
+ },
+ "hero:nagoya:1": {
+  "src": "images/p061.jpg",
+  "page": "https://ja.wikipedia.org/wiki/%E5%90%8D%E5%8F%A4%E5%B1%8B%E3%83%86%E3%83%AC%E3%83%93%E5%A1%94",
+  "title": "名古屋テレビ塔"
+ },
+ "hero:nagoya:2": {
+  "src": "images/p062.jpg",
+  "page": "https://ja.wikipedia.org/wiki/%E6%84%9B%E7%9F%A5%E9%AB%98%E9%80%9F%E4%BA%A4%E9%80%9A%E6%9D%B1%E9%83%A8%E4%B8%98%E9%99%B5%E7%B7%9A",
+  "title": "愛知高速交通東部丘陵線"
+ },
+ "hero:nagoya:3": {
+  "src": "images/p063.jpg",
+  "page": "https://ja.wikipedia.org/wiki/%E5%90%88%E6%8E%8C%E9%80%A0%E3%82%8A",
+  "title": "合掌造り"
+ },
+ "hero:nagoya:4": {
+  "src": "images/p064.jpg",
+  "page": "https://ja.wikipedia.org/wiki/%E4%B8%83%E9%87%8C%E3%81%AE%E6%B8%A1%E3%81%97",
+  "title": "七里の渡し"
  }
 };

@@ -237,6 +237,7 @@ function renderCity() {
     `<a href="#/${state.city}/${m.id}"><span class="ico">${m.ico}</span><b>${m.name}</b><small>${m.desc}</small></a>`).join("");
 }
 
+let prevView = null;
 function showView(view) {
   const c = CITIES[state.city], m = MENU.find(x => x.id === view) || MENU[0];
   $("detail-title").textContent = `${c.name} ${m.name}`;
@@ -247,10 +248,15 @@ function showView(view) {
   document.querySelectorAll(".view").forEach(v => { v.hidden = v.id !== viewEl; });
   scrollTo(0, 0);
   if (m.id === "plan") renderPlan();
-  if (m.id === "foods" || m.id === "sights") { state.listKind = m.id; renderList(); }
+  if (m.id === "foods" || m.id === "sights") {
+    if (state.listKind !== m.id) state.listFilter = m.id === "foods" && prevView === "plan" ? `d${state.day + 1}` : "all";
+    else if (m.id === "foods" && prevView === "plan") state.listFilter = `d${state.day + 1}`;
+    state.listKind = m.id; renderList();
+  }
   if (m.id === "map") renderAllMap();
   if (m.id === "budget") { renderCosts(); loadBudget(); }
   if (m.id === "pack") renderPack();
+  prevView = m.id;
 }
 
 // ===== 여행코스 =====
@@ -281,41 +287,64 @@ function renderPlan() {
     </li>`).join("");
   loadPhotos($("plan-stops"));
   $("plan-tips").innerHTML = `<li><b>Day ${state.day + 1} · ${esc(d.title)}</b></li>` + d.tips.map(t => `<li>${esc(t)}</li>`).join("");
+  const foods = places(state.city).filter(p => p.kind === "foods" && p.day === state.day + 1);
+  $("plan-foods").innerHTML = foods.length ? `<h2>이 날 근처 먹거리</h2><ul class="mini-foods">${foods.map(p =>
+    `<li><span class="ftype">${esc(p.type)}</span><b>${esc(p.name)}</b><p>${esc(p.desc)}</p><a href="${gmapsSearch(p.q)}" target="_blank" rel="noopener">구글 지도 ↗</a></li>`).join("")}</ul>
+    <a class="link-btn" href="#/${state.city}/foods">먹거리 전체 보기 ›</a>` : "";
 }
 
 // ===== 먹거리 / 관광지 =====
-function renderList() {
-  const kind = state.listKind;
-  $("list-chips").innerHTML = [["all", "전체"], ["picks", "★ 찜한 곳"]].map(([k, l]) =>
-    `<button type="button" aria-pressed="${state.listFilter === k}" data-f="${k}">${l}</button>`).join("");
-  $("list-chips").querySelectorAll("button").forEach(b => b.onclick = () => { state.listFilter = b.dataset.f; renderList(); });
-
-  let list = places(state.city).filter(p => p.kind === kind);
-  if (state.listFilter === "picks") list = list.filter(p => state.picks.has(p.id));
-  const ul = $("places");
-  if (!list.length) { ul.innerHTML = `<li class="empty">아직 찜한 곳이 없어요.<br>☆를 눌러 가고 싶은 곳을 담아보세요.</li>`; return; }
-  ul.innerHTML = list.map(p => {
-    const on = state.picks.has(p.id);
-    return `<li>
+function placeCard(p) {
+  const on = state.picks.has(p.id);
+  return `<li>
       ${photo(p.wiki, p.kind === "foods" ? "食" : "景")}
       <div class="row">
-        <div class="body"><b>${esc(p.name)}</b><p>${esc(p.desc)}</p>
+        <div class="body">${p.type ? `<span class="ftype">${esc(p.type)}</span>` : ""}<b>${esc(p.name)}</b><p>${esc(p.desc)}</p>
           <div class="links"><a href="${gmapsSearch(p.q)}" target="_blank" rel="noopener">구글 지도 ↗</a>
             <button type="button" data-focus="${esc(p.id)}">지도에서 보기</button></div></div>
         <button class="star ${on ? "on" : ""}" type="button" data-id="${esc(p.id)}" aria-label="${esc(p.name)} 찜하기" aria-pressed="${on}">${on ? "★" : "☆"}</button>
       </div>
     </li>`;
-  }).join("");
-  loadPhotos(ul);
-  ul.querySelectorAll(".star").forEach(b => b.onclick = () => {
+}
+function bindCards(root, rerender) {
+  loadPhotos(root);
+  root.querySelectorAll(".star").forEach(b => b.onclick = () => {
     const id = b.dataset.id;
     state.picks.has(id) ? state.picks.delete(id) : state.picks.add(id);
-    savePicks(); renderList();
+    savePicks(); rerender();
     toast(state.picks.has(id) ? "찜했어요" : "찜을 뺐어요");
   });
-  ul.querySelectorAll("[data-focus]").forEach(b => b.onclick = () => {
+  root.querySelectorAll("[data-focus]").forEach(b => b.onclick = () => {
     state.focus = b.dataset.focus; state.mapFilter = "all"; location.hash = `#/${state.city}/map`;
   });
+}
+
+function renderList() {
+  const kind = state.listKind, c = CITIES[state.city];
+  // 먹거리는 여행 날짜(그날 가는 동네)별로 나눠 보여준다
+  const dayChips = kind === "foods" ? c.plan.map((d, i) => [`d${i + 1}`, `Day ${i + 1}`]) : [];
+  const chips = [["all", "전체"], ...dayChips, ["picks", "★ 찜"]];
+  if (!chips.some(([k]) => k === state.listFilter)) state.listFilter = "all";
+  $("list-chips").innerHTML = chips.map(([k, l]) =>
+    `<button type="button" aria-pressed="${state.listFilter === k}" data-f="${k}">${l}</button>`).join("");
+  $("list-chips").querySelectorAll("button").forEach(b => b.onclick = () => { state.listFilter = b.dataset.f; renderList(); });
+
+  let list = places(state.city).filter(p => p.kind === kind);
+  if (state.listFilter === "picks") list = list.filter(p => state.picks.has(p.id));
+  if (state.listFilter.startsWith("d")) list = list.filter(p => p.day === +state.listFilter.slice(1));
+  const ul = $("places");
+  if (!list.length) { ul.innerHTML = `<li class="empty">아직 찜한 곳이 없어요.<br>☆를 눌러 가고 싶은 곳을 담아보세요.</li>`; return; }
+  if (kind === "foods") {
+    const days = [...new Set(list.map(p => p.day))].sort();
+    ul.innerHTML = days.map(day => {
+      const plan = c.plan[day - 1];
+      return `<li class="group-head"><span>Day ${day}</span>${esc(plan ? plan.title : "")}</li>` +
+        list.filter(p => p.day === day).map(placeCard).join("");
+    }).join("");
+  } else {
+    ul.innerHTML = list.map(placeCard).join("");
+  }
+  bindCards(ul, renderList);
 }
 
 // ===== 전체 지도 =====

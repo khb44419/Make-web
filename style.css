@@ -280,3 +280,20 @@ table.yen tr.group td { font-family: var(--display); font-weight: 700; color: va
 .catch { font-size: clamp(1.45rem, 6.5vw, 1.8rem); line-height: 1.3; }
 .city-intro { justify-items: start; }
 .city-intro .facts { justify-self: stretch; }
+
+/* 먹거리: 날짜별 묶음 */
+.places .group-head {
+  display: flex; align-items: baseline; gap: 8px; border: 0; background: none; padding: 10px 2px 0; overflow: visible;
+  font-family: var(--display); font-weight: 700; font-size: 1.05rem;
+}
+.places .group-head span { color: var(--ume); font-size: .85rem; letter-spacing: .06em; }
+.ftype {
+  justify-self: start; font-size: .7rem; color: var(--ume); border: 1px solid var(--ume); border-radius: 999px; padding: 0 8px; line-height: 1.6;
+}
+.day-foods { display: grid; gap: 10px; }
+.day-foods:empty { display: none; }
+.day-foods h2 { font-size: 1.1rem; }
+.mini-foods { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.mini-foods li { display: grid; justify-items: start; gap: 2px; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px; }
+.mini-foods p { margin: 0; font-size: .85rem; color: var(--muted); }
+.mini-foods a { font-size: .82rem; }

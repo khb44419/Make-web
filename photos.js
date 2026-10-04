@@ -15,6 +15,11 @@ const PHOTOS = {
   "page": "https://ja.wikipedia.org/wiki/%E5%A4%A7%E5%9D%82%E5%9F%8E",
   "title": "大坂城"
  },
+ "osaka:도톤보리": {
+  "src": "images/p004.jpg",
+  "page": "https://ja.wikipedia.org/wiki/%E6%88%8E%E6%A9%8B",
+  "title": "戎橋"
+ },
  "osaka:유니버설 스튜디오 재팬": {
   "src": "images/p005.jpg",
   "page": "https://ja.wikipedia.org/wiki/%E3%83%A6%E3%83%8B%E3%83%90%E3%83%BC%E3%82%B5%E3%83%AB%E3%83%BB%E3%82%B9%E3%82%BF%E3%82%B8%E3%82%AA%E3%83%BB%E3%82%B8%E3%83%A3%E3%83%91%E3%83%B3",

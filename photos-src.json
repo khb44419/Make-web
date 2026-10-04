@@ -237,5 +237,46 @@
   "spot:nagoya:base": [
     "名古屋駅",
     "en:Nagoya Station"
+  ],
+  "hero:osaka:1": [
+    "心斎橋筋商店街",
+    "法善寺",
+    "グリコサイン",
+    "en:Shinsaibashi"
+  ],
+  "hero:osaka:2": [
+    "ザ・フライング・ダイナソー",
+    "ハリウッド・ドリーム・ザ・ライド",
+    "en:Universal Studios Japan"
+  ],
+  "hero:osaka:3": [
+    "天保山大観覧車",
+    "en:Tempozan Ferris Wheel",
+    "大阪港"
+  ],
+  "hero:osaka:4": [
+    "あべのハルカス",
+    "新世界 (大阪市)",
+    "en:Abeno Harukas"
+  ],
+  "hero:nagoya:1": [
+    "中部電力 MIRAI TOWER",
+    "名古屋テレビ塔",
+    "en:Nagoya TV Tower"
+  ],
+  "hero:nagoya:2": [
+    "リニモ",
+    "en:Linimo",
+    "愛知高速交通東部丘陵線"
+  ],
+  "hero:nagoya:3": [
+    "合掌造り",
+    "en:Gasshō-zukuri",
+    "白川村"
+  ],
+  "hero:nagoya:4": [
+    "宮の渡し",
+    "en:Miya-no-watashi",
+    "熱田区"
   ]
 }

@@ -95,7 +95,7 @@ def main():
         if key.startswith("_"):
             continue
         # 도시별로 겹침을 막는다 (표지 사진도 그 도시 그룹에 포함)
-        group = key.replace("spot:", "").replace("cover:", "").split(":")[0]
+        group = key.replace("spot:", "").replace("cover:", "").replace("hero:", "").split(":")[0]
         seen = used.setdefault(group, set())
         hashes = used.setdefault(group + ":hash", [])
         print(key)

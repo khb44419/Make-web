@@ -32,6 +32,11 @@
       <ul id="events"></ul>
     </section>
 
+    <section>
+      <h3>📅 3박 4일 추천 일정</h3>
+      <div id="plan" class="plan"></div>
+    </section>
+
     <section class="map-wrap">
       <div class="tabs">
         <button data-tab="all" class="active">전체</button>
@@ -45,6 +50,25 @@
     <section class="list">
       <h3>목록 <small>(⭐ 눌러서 우리 일정에 담기)</small></h3>
       <ul id="places"></ul>
+    </section>
+  </main>
+
+  <main id="tools">
+    <section>
+      <h3>💰 예산 계산기 <small>(2명, 3박 4일 · 숫자는 마음대로 고쳐보세요)</small></h3>
+      <div class="budget">
+        <label>항공권 (1인) <input type="number" id="b-flight" step="10000"></label>
+        <label>숙소 (1박, 방 1개) <input type="number" id="b-hotel" step="10000"></label>
+        <label>식비 (1인/일) <input type="number" id="b-food" step="5000"></label>
+        <label>교통 (1인/일) <input type="number" id="b-transport" step="1000"></label>
+        <label>입장료·액티비티 (1인) <input type="number" id="b-act" step="10000"></label>
+        <label>쇼핑 (총) <input type="number" id="b-shop" step="10000"></label>
+      </div>
+      <p class="total">총 <b id="b-total">0</b>원 · 1인 <b id="b-each">0</b>원</p>
+    </section>
+    <section>
+      <h3>🎒 준비물 체크리스트</h3>
+      <ul id="checklist" class="check"></ul>
     </section>
   </main>
 

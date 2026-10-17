@@ -1,0 +1,23 @@
+{
+  "name": "yamyam-ad",
+  "version": "1.0.0",
+  "private": true,
+  "description": "얌얌 아이스크림 할인점 15초 세로 광고 (Remotion)",
+  "scripts": {
+    "studio": "remotion studio",
+    "render": "remotion render YamYamAd out/yamyam_ad.mp4",
+    "thumbnail": "remotion still YamYamAd out/thumbnail.png --frame=-1",
+    "build": "npm run render && npm run thumbnail",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@remotion/cli": "4.0.531",
+    "react": "19.3.0",
+    "react-dom": "19.3.0",
+    "remotion": "4.0.531"
+  },
+  "devDependencies": {
+    "@types/react": "19.3.0",
+    "typescript": "5.9.3"
+  }
+}

@@ -49,8 +49,8 @@ const photo = (id, fallback, cls = "", inLink = false) => {
 function loadPhotos() {} // 사진이 미리 들어 있어 따로 불러올 필요 없음
 
 // ===== D-day 도장 =====
-const days = Math.ceil((new Date("2027-02-01T00:00:00") - new Date()) / 86400000);
-$("dday").innerHTML = days > 0 ? `<small>出発まで</small><b>D-${days}</b><small>2027 · 02</small>` : `<b>旅行中</b>`;
+const days = Math.ceil((new Date("2027-02-15T00:00:00") - new Date()) / 86400000);
+$("dday").innerHTML = days > 0 ? `<small>出発まで</small><b>D-${days}</b><small>2027 · 02 · 15</small>` : `<b>旅行中</b>`;
 
 // ===== 매화 가지 장식 =====
 (function drawBranch() {
